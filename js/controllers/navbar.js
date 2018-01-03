@@ -29,16 +29,21 @@ function navBarController($scope, uuid, $http, $state, $window, $cookies, $userS
 		else {
 			$scope.logo = false;
 		}
+
 		
 		$scope.logout = function(){
+			var uuidCookie = $cookies.get('uuid');
 			var logoutData =  {
 				'userid' : $scope.user.userid,
-				'uuid' : $window.sessionStorage.uuid
+				'uuid' : uuidCookie
 			}
 			var userLogoutPromise = $userServices.userLogout(logoutData);
 			userLogoutPromise.then(function(logoutRes){
 				if(logoutRes.status==='Successful'){
-					$window.sessionStorage["uuid"] = null;
+					var cookiesAll = $cookies.getAll();
+					for (var key in cookiesAll) {
+						$cookies.remove(key);
+					}
 				 	$state.go('appSimple.login');
 				}
 			})
