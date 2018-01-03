@@ -8,11 +8,16 @@ mainController.$inject = [
   'uuid',
   '$http',
   '$state',
+  '$sessionStorage',
   '$window',
+  '$cookies',
   '$userServices',
+  '$companyServices',
+  '$visitorServices',
+  '$appointmentServices'
 ];
 
-function mainController($scope, uuid, $http, $state, $window, $userServices) {
+function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $cookies, $userServices, $companyServices, $visitorServices,$appointmentServices) {
 
   
 
@@ -24,95 +29,97 @@ function mainController($scope, uuid, $http, $state, $window, $userServices) {
     $scope.useOverstay = false;
     $scope.useVip = false;
     var excludemobileapps = null;
+    var uuidCookie = $cookies.get('uuid');
 
-    /*var companyBuildingData = {
-      'companyid' : $userServices.userLoginDetail.companyid,
-      'userid' : $userServices.userLoginDetail.userid
-    };
+    console.log($sessionStorage.userDetails);
 
-    var companyBuildingRequest = $companyServices.companyBuildingsRequest(companyBuildingData);
-    companyBuildingRequest.then(function(companyBuildingResponse){
-      $companyServices.companyBuildingsDetails = companyBuildingResponse;
+    var companyRequestData = {
+      "userid": $sessionStorage.userDetails.userid,
+      "uuid": uuidCookie
+    }
+    var companyDetailsRequest = $companyServices.companyDetailsRequest(companyRequestData);
+    companyDetailsRequest.then(function(Response){
+      $companyServices.companyDetails = Response;
+        var visitorIdCardRequestData = {
+          "userid": $sessionStorage.userDetails.userid,
+          "uuid": uuidCookie
+        }
+        var visitorCardRequest = $visitorServices.visitorCardTypeRequest(visitorIdCardRequestData);
+        visitorCardRequest.then(function(visitorresponse1){
+          $visitorServices.visitorCardTypes = visitorresponse1;
+            var visitorSexRequestData = {
+              "userid": $sessionStorage.userDetails.userid,
+              "uuid": uuidCookie
+            }
+            var visitorSexTypesRequest = $visitorServices.visitorSexTypeRequest(visitorSexRequestData);
+            visitorSexTypesRequest.then(function(visitorreponse2){
+              $visitorServices.visitorSexTypes = visitorreponse2;
+              var companyPreferenceRequestData = {
+                "companyid": $sessionStorage.userDetails.companyid,
+                "userid": $sessionStorage.userDetails.userid,
+                "uuid": uuidCookie
+              }
+              var companyPreferenceRequest = $companyServices.companyPreferenceRequest(companyPreferenceRequestData);
+              companyPreferenceRequest.then(function(companyPreferenceresponse){
+                $companyServices.companyPreferenceDetails = companyPreferenceresponse;
+                if ($companyServices.companyPreferenceDetails.excludemobileapps > 1)
+                  {
+                    excludemobileapps = 1;
+                  }
+                  else{
+                    excludemobileapps = 0;
+                  }
+                  if($companyServices.companyPreferenceDetails.usemaildelivery > 0) {
+                    $scope.displayMailRecords = true;
+                  }
+
+                  if($companyServices.companyPreferenceDetails.useoverstay > 0) {
+                    $scope.useOverstay = true;
+                  }
+
+                  if($companyServices.companyPreferenceDetails.useoverstay > 0) {
+                    $scope.useVip = true;
+                  }
+                  if ($companyServices.companyPreferenceDetails.excludemobileapps > 1)
+                  {
+                    excludemobileapps = 1;
+                  }
+                  else{
+                    excludemobileapps = 0;
+                  }
+                  if($companyServices.companyPreferenceDetails.usemaildelivery > 0) {
+                    $scope.displayMailRecords = true;
+                  }
+
+                  if($companyServices.companyPreferenceDetails.useoverstay > 0) {
+                    $scope.useOverstay = true;
+                  }
+
+                  if($companyServices.companyPreferenceDetails.useoverstay > 0) {
+                    $scope.useVip = true;
+                  }
+                  var companypurposeStringrequestData = {
+                    "companyid": $sessionStorage.userDetails.companyid,
+                    "userid": $sessionStorage.userDetails.userid,
+                    "uuid": uuidCookie
+                  }
+                  var companyPurposeStringRequest = $companyServices.companyPurposeStringRequest(companypurposeStringrequestData);
+                  companyPurposeStringRequest.then(function(compantpurposeStringresponse){
+                    $companyServices.companyPurposeStringDetail = compantpurposeStringresponse;
+
+                    var appointmentStatusRequestData = {
+                      "userid":$sessionStorage.userDetails.userid,
+                      "uuid": uuidCookie
+                    }
+                    var appointstatusrequest = $appointmentServices.appointmentApproveRequest(appointmentStatusRequestData);
+                    appointstatusrequest.then(function(appointmentApproveStatusresponse){
+                        $appointmentServices.appointmentApproveStatus = appointmentApproveStatusresponse;
+                    });
+                  });
+              });
+            });
+        });
     });
-
-    var companyPreferenceData = {
-      'companyid' : $userServices.userLoginDetail.companyid,
-      'userid' : $userServices.userLoginDetail.userid
-    };
-
-    var companyPreferenceRequest = $companyServices.companyPreferenceRequest(companyPreferenceData);
-    companyPreferenceRequest.then(function(companyPreferenceResponse){
-      $companyServices.companyPreferenceDetails = companyPreferenceResponse;
-      console.log($companyServices.companyPreferenceDetails);
-      if ($companyServices.companyPreferenceDetails.excludemobileapps > 1)
-      {
-        excludemobileapps = 1;
-      }
-      else{
-        excludemobileapps = 0;
-      }
-      if($companyServices.companyPreferenceDetails.usemaildelivery > 0) {
-        $scope.displayMailRecords = true;
-      }
-
-      if($companyServices.companyPreferenceDetails.useoverstay > 0) {
-        $scope.useOverstay = true;
-      }
-
-      if($companyServices.companyPreferenceDetails.useoverstay > 0) {
-        $scope.useVip = true;
-      }
-    });
-
-
-    var companyPurposeStringData = {
-      'companyid' : $userServices.userLoginDetail.companyid,
-      'userid' : $userServices.userLoginDetail.userid
-    };
-
-    var companyPurposeStringRequest = $companyServices.companyPurposeStringRequest(companyPurposeStringData);
-    companyPurposeStringRequest.then(function(companyPurposeStringResponse){
-      $companyServices.companyPurposeStringDetail = companyPurposeStringResponse;
-    });
-
-    var visitorIdCardTypesData = {
-      'userid' : $userServices.userLoginDetail.userid
-    };
-
-    var visitorIdCardTypesRequest = $visitorServices.visitorIdCardTypesRequest(visitorIdCardTypesData);
-    visitorIdCardTypesRequest.then(function(visitorIdCardTypesResponse){
-      $visitorServices.visitorIdCardTypesDetail = visitorIdCardTypesResponse;
-    });
-
-    var visitorSextypesReqData = {
-      'userid' : $userServices.userLoginDetail.userid
-    };
-
-    var visitorSexTypesRequest = $visitorServices.visitorSexTypesRequest(visitorSextypesReqData);
-    visitorSexTypesRequest.then(function(visitorSexTypesResponse){
-      $visitorServices.visitorSexTypesDetails = visitorSexTypesResponse;
-    });
-
-
-      var appointmentRequestData = {
-        'excludemobileapps' : 1,
-        'companyid' : $userServices.userLoginDetail.companyid,
-        'userid' : $userServices.userLoginDetail.userid
-      };
-
-      var appointmentTodayRequest = $appointmentServices.appointmentTodayRequest(appointmentRequestData);
-      appointmentTodayRequest.then(function(appointmenttodayResponse){
-        $appointmentServices.appointmentTodayData = appointmenttodayResponse;
-      });
-
-      var appointmentApprovedRequestData = {
-        'userid' : $userServices.userLoginDetail.userid
-      };
-
-      var appointmentApprovedRequest = $appointmentServices.appointmentApprovedRequest(appointmentApprovedRequestData);
-      appointmentApprovedRequest.then(function(appointmentApprovedResponse){
-        $appointmentServices.appointmentApprovedDetails = appointmentApprovedResponse;
-      });*/
 
   }
 

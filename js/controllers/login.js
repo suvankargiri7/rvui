@@ -29,6 +29,7 @@ function loginController($scope, uuid, $http, $state, $window,$localStorage, $se
 		var responseDetails1 = $userServices.userLoginRequest(data);
 		responseDetails1.then(function(userDetails){
 			$userServices.userLoginDetail = userDetails;
+			$sessionStorage.userDetails = userDetails;
 			$state.go('app.main');
 		});
 	}
@@ -48,6 +49,7 @@ function loginController($scope, uuid, $http, $state, $window,$localStorage, $se
 			var responseDetails = $userServices.userLoginRequest(data);
 			responseDetails.then(function(userDetails){
 				$userServices.userLoginDetail = userDetails;
+				$sessionStorage.userDetails = userDetails;
 				$cookies.put('uuid', hash);
 				$cookies.put('username', loginEnteredValue.email);
 				$cookies.put('password', loginEnteredValue.password);

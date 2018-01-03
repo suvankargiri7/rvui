@@ -6,7 +6,7 @@ angular
 
   $stateProvider
   .state('app', {
-    abstract: true,
+    url:'/page',
     templateUrl: 'views/common/layouts/full.html',
     controller: 'mainController'
     //page title goes here
