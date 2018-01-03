@@ -1,0 +1,270 @@
+
+<div class="animated fadeIn" ng-controller="appointmentController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-block">
+                    <div class="row">
+                        <!--/.col-->
+                      <div class="col-sm-6 col-lg-6">
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-12">
+                              <div class="row">
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 tc" >
+                                    <div class="card-block">
+                                      <button type="button" class="btn btn-outline-primary btn-block" ng-if="!appointmentToday" ng-click="showToday()">Today<span class="badge badge-info">5</span></button>
+                                      <button type="button" class="btn btn-block btn-primary" ng-if="appointmentToday">Today<span class="badge badge-info">5</span></button>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 tc" ng-hide="!useOverstay">
+                                    <div class="card-block">
+                                      <button type="button" class="btn btn-outline-primary btn-block" ng-if="!appointmentOverstay" ng-click="showOverstay()">Overstay<span class="badge badge-info">5</span></button>
+                                      <button type="button" class="btn btn-primary btn-block" ng-if="appointmentOverstay">Overstay<span class="badge badge-info">5</span></button>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 tc" ng-hide="!useVip">
+                                  <div class="card-block">
+                                    <button type="button" class="btn btn-outline-primary btn-block" ng-if="!appointmentVip" ng-click="showVIP()">VIP<span class="badge badge-info">5</span></button>
+                                    <button type="button" class="btn btn-primary btn-block" ng-if="appointmentVip">VIP<span class="badge badge-info">5</span></button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!--/.row-->
+                          <hr class="mt-0">
+                      </div>
+                        <!--/.col-->
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                    <div class="card-block padding-top-0">
+                                        <small class="text-muted">Name/Host/Company/Pass No/vehicle No</small>
+                                        <br>
+                                        <div class="input-group">
+                                          <input type="text" id="input2-group2" name="input2-group2" class="form-control" placeholder="Type">
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/.row-->
+                            <hr class="mt-0">
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        toolbar
+                      </div>
+                    </div>
+                    <!--/.row-->
+                    <table class="table table-hover table-outline mb-0 hidden-sm-down" ng-hide="!appointmentToday">
+                        <thead class="thead-default">
+                            <tr>
+                              <th class="text-center"></th>
+                                <th class="text-center"><i class="icon-people"></i>
+                                </th>
+                                <th>Visitor</th>
+                                <th class="text-center">Visit to</th>
+                                <th>Host</th>
+                                <th class="text-center">Pass no</th>
+                                <th>Visit time & date</th>
+                                <th>Entry time</th>
+                                <th>Exit time</th>
+                                <th class="text-center">Device</th>
+                                <th class="text-center">Activity</th>
+                            </tr>
+                        </thead>
+                        <!-- Today Appointment -->
+                        <tbody>
+                            <tr>
+                              <td class="text-center">
+                                <input type="checkbox" checked>
+                              </td>
+                                <td class="text-center">
+                                    <div class="avatar">
+                                        <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                                        <span class="avatar-status badge-success" ng-class="active"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ng-binding">Yiorgos Avraamu today</div>
+                                    <div class="small text-muted">
+                                        <span>Mobile</span>
+                                        : 6525252525</div>
+                                </td>
+                                <td class="text-center">
+                                    <div>Company Name</div>
+                                </td>
+                                <td>
+                                    <div class="ng-binding">Yiorgos Avraamu</div>
+                                    <div class="small text-muted">
+                                        <span>Mobile</span>
+                                        : 6525252525</div>
+                                </td>
+                                <td class="text-center">
+                                    <small class="text-muted">1212122</small>
+                                </td>
+                                <td>
+                                    <div class="small text-muted">12.30 PM</div>
+                                    <strong>12/12/2017</strong>
+                                </td>
+                                <td>
+                                    <a class="btn btn-outline-warning" href="#">Mark entry <i class="icon-clock icons"></i></a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-outline-warning" href="#">Mark exit <i class="icon-clock icons"></i></a>
+                                </td>
+                                <td class="text-center">
+                                  <i class="icon-screen-desktop"></i>
+                                </td>
+                                <td class="text-center">
+                                  <a class="btn btn-outline-success" href="#"><i class="icon-pencil icons"></i></a>
+                                  <a class="btn btn-outline-danger" href="#"><i class="icon-ban icons"></i></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                     <table class="table table-hover table-outline mb-0 hidden-sm-down" ng-hide="!appointmentOverstay">
+                        <thead class="thead-default">
+                            <tr>
+                              <th class="text-center"></th>
+                                <th class="text-center"><i class="icon-people"></i>
+                                </th>
+                                <th>Visitor</th>
+                                <th class="text-center">Visit to</th>
+                                <th>Host</th>
+                                <th class="text-center">Pass no</th>
+                                <th>Visit time & date</th>
+                                <th>Entry time</th>
+                                <th>Exit time</th>
+                                <th class="text-center">Device</th>
+                                <th class="text-center">Activity</th>
+                            </tr>
+                        </thead>
+                        <!-- overstay Appointment -->
+                        <tbody>
+                            <tr>
+                              <td class="text-center">
+                                <input type="checkbox" checked>
+                              </td>
+                                <td class="text-center">
+                                    <div class="avatar">
+                                        <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                                        <span class="avatar-status badge-success" ng-class="active"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ng-binding">Yiorgos Avraamu overstay</div>
+                                    <div class="small text-muted">
+                                        <span>Mobile</span>
+                                        : 6525252525</div>
+                                </td>
+                                <td class="text-center">
+                                    <div>Company Name</div>
+                                </td>
+                                <td>
+                                    <div class="ng-binding">Yiorgos Avraamu</div>
+                                    <div class="small text-muted">
+                                        <span>Mobile</span>
+                                        : 6525252525</div>
+                                </td>
+                                <td class="text-center">
+                                    <small class="text-muted">1212122</small>
+                                </td>
+                                <td>
+                                    <div class="small text-muted">12.30 PM</div>
+                                    <strong>12/12/2017</strong>
+                                </td>
+                                <td>
+                                    <a class="btn btn-outline-warning" href="#">Mark entry <i class="icon-clock icons"></i></a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-outline-warning" href="#">Mark exit <i class="icon-clock icons"></i></a>
+                                </td>
+                                <td class="text-center">
+                                  <i class="icon-screen-desktop"></i>
+                                </td>
+                                <td class="text-center">
+                                  <a class="btn btn-outline-success" href="#"><i class="icon-pencil icons"></i></a>
+                                  <a class="btn btn-outline-danger" href="#"><i class="icon-ban icons"></i></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <!-- Vip Appointment-->
+                    <table class="table table-hover table-outline mb-0 hidden-sm-down" ng-hide="!appointmentVip">
+                        <thead class="thead-default">
+                            <tr>
+                              <th class="text-center"></th>
+                                <th class="text-center"><i class="icon-people"></i>
+                                </th>
+                                <th>Visitor</th>
+                                <th class="text-center">Visit to</th>
+                                <th>Host</th>
+                                <th class="text-center">Pass no</th>
+                                <th>Visit time & date</th>
+                                <th>Entry time</th>
+                                <th>Exit time</th>
+                                <th class="text-center">Device</th>
+                                <th class="text-center">Activity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <td class="text-center">
+                                <input type="checkbox" checked>
+                              </td>
+                                <td class="text-center">
+                                    <div class="avatar">
+                                        <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                                        <span class="avatar-status badge-success" ng-class="active"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ng-binding">Yiorgos Avraamu vip</div>
+                                    <div class="small text-muted">
+                                        <span>Mobile</span>
+                                        : 6525252525</div>
+                                </td>
+                                <td class="text-center">
+                                    <div>Company Name</div>
+                                </td>
+                                <td>
+                                    <div class="ng-binding">Yiorgos Avraamu</div>
+                                    <div class="small text-muted">
+                                        <span>Mobile</span>
+                                        : 6525252525</div>
+                                </td>
+                                <td class="text-center">
+                                    <small class="text-muted">1212122</small>
+                                </td>
+                                <td>
+                                    <div class="small text-muted">12.30 PM</div>
+                                    <strong>12/12/2017</strong>
+                                </td>
+                                <td>
+                                    <a class="btn btn-outline-warning" href="#">Mark entry <i class="icon-clock icons"></i></a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-outline-warning" href="#">Mark exit <i class="icon-clock icons"></i></a>
+                                </td>
+                                <td class="text-center">
+                                  <i class="icon-screen-desktop"></i>
+                                </td>
+                                <td class="text-center">
+                                  <a class="btn btn-outline-success" href="#"><i class="icon-pencil icons"></i></a>
+                                  <a class="btn btn-outline-danger" href="#"><i class="icon-ban icons"></i></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+
+</div>

@@ -1,0 +1,73 @@
+<header class="app-header navbar" ng-controller="navBarController">
+    <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">&#9776;</button>
+    <!--<a class="navbar-brand" ui-sref="app.main"></a>-->
+    <ul class="nav navbar-nav d-md-down-none">
+        <li class="nav-item">
+            <a class="nav-link navbar-toggler sidebar-toggler" href="#">&#9776;</a>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <img src="img/avatars/6.jpg" class="img-avatar" alt="{{user.username}}" ng-if="!logo">
+                <img src="{{logo}}" class="img-avatar" alt="{{user.username}}" ng-if="logo">
+                <span class="d-md-down-none">{{user.username}}</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <div class="dropdown-header text-center">
+                    <strong>Settings</strong>
+                </div>
+
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changePassword"><i class="fa fa-user"></i> Change Password</a>
+                <div class="divider"></div>
+                <a class="dropdown-item" href="#" ng-click="logout()"><i class="fa fa-lock"></i> Logout</a>
+            </div>
+        </li>
+
+    </ul>
+</header>
+
+<div id="changePassword" class="modal fade" role="dialog" ng-controller="modalController">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Change password</h4>
+      </div>
+      <div class="modal-body">
+        <form name="changePasswordForm" novalidate>
+
+            <!-- CURRENT PASSWORD -->
+            <div class="form-group" ng-class="{ 'has-error' : changePasswordForm.currentpassword.$invalid && !changePasswordForm.currentpassword.$pristine }">
+                <label> <i class="icon-lock"></i> Current password</label>
+                <input type="password" name="currentpassword" class="form-control" ng-model="user.currentpassword" ng-minlength="3">
+                <p ng-show="changePasswordForm.currentpassword.$error.minlength" class="help-block">Current Password is too short.</p>
+            </div>     
+
+            <!-- NEW PASSWORD -->
+            <div class="form-group" ng-class="{ 'has-error' : changePasswordForm.newpassword.$invalid && !changePasswordForm.newpassword.$pristine }" required>
+                <label> <i class="icon-lock"></i> New password</label>
+                <input type="password" name="newpassword" class="form-control" ng-model="user.newpassword" ng-minlength="3">
+                <p ng-show="changePasswordForm.newpassword.$error.minlength" class="help-block">New Password is too short.</p>
+            </div>
+
+            <!-- RE TYPE PASSWORD -->
+            <div class="form-group" ng-class="{ 'has-error' : changePasswordForm.retypepassword.$invalid && !changePasswordForm.retypepassword.$pristine }" required>
+                <label> <i class="icon-lock"></i> Retype password</label>
+                <input type="password" name="retypepassword" class="form-control" ng-model="user.retypepassword" ng-minlength="3">
+                <p ng-show="changePasswordForm.retypepassword.$error.minlength" class="help-block">New Password is too short.</p>
+                <p ng-show="user.newpassword!==user.retypepassword" class="help-block">Password Mismatched</p>
+            </div> 
+            
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="passwordChange()">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="passwordChangeClose">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

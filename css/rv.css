@@ -1,0 +1,77 @@
+/**
+ * RealVisitor CSS
+ * @version v1.0
+ * Copyright (c) 2017 RealVisitor.in
+ */
+.anchor-without-underline{
+  color: #b0bec5;
+}
+.anchor-without-underline:hover{
+  color: #ffffff;
+  text-decoration: none;
+}
+.background1{
+  background-color: #ffffff;
+}
+.height-46{
+  height: 46px;
+}
+.tc{
+  text-align: center;
+}
+.borderleftright1{
+  border-left: 1px solid #20a8d8;
+  border-right: 1px solid #20a8d8;
+}
+.borderbottom1{
+  border-bottom: 1px solid #cfd8dc;
+}
+.border-left-1{
+  border-left:1px solid #cfd8dc;
+}
+.border-right-1{
+  border-right:1px solid #cfd8dc;
+}
+.padding-8{
+  padding:8px;
+}
+.padding-left-0{
+  padding-left: 0px;
+}
+.padding-right-0{
+  padding-right: 0px;
+}
+.padding-right-2{
+  padding-right:2px;
+}
+.padding-top-0{
+  padding-top: 0px;
+}
+.padding-top-16{
+  padding-top: 16px;
+}
+.padding-down-8{
+  padding-down: 8px;
+}
+.cursor1{
+  cursor: pointer;
+}
+.vertical-divider{
+  border-left:1px solid #20a8d8;
+}
+.avatar .avatar-status {
+  width:12px !important;
+  height:12px !important;
+}
+.app-header.navbar{
+  height:70px !important;
+}
+.header-fixed .app-body{
+  margin-top: 70px !important;
+}
+.app-header.navbar .navbar-brand {
+  height:70px !important;
+}
+.app-header.navbar .nav-item .nav-link > .img-avatar, .app-header.navbar .nav-item .dropdown-toggle > .img-avatar {
+  height: 55px !important;
+}
