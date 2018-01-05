@@ -19,7 +19,8 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 
 	var appointmentServices = {
 		appointmentApproveStatus : appointmentApproveStatus,
-		appointmentApproveRequest: appointmentApproveRequest
+		appointmentApproveRequest: appointmentApproveRequest,
+		appointmentTodayListRequest : appointmentTodayListRequest,
 	};
 
 	return appointmentServices;
@@ -34,4 +35,16 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 			}
 		});
 	}
+
+	function appointmentTodayListRequest(requestData) {
+		return $http.get('https://cppjs.com/api/appointment/today/excludemobileapps/'+requestData.excludemobileapps+'/company/'+ requestData.companyid + '/user/'+ requestData.userid + "/uuid/" + requestData.uuid).then(function(response){
+			if(response.data.error){
+				return "Error";
+			}
+			else {
+				return response.data;
+			}
+		});
+	}
+
 }

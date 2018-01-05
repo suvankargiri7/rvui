@@ -55,210 +55,141 @@
                     </div>
                     <div class="row">
                       <div class="col-sm-12">
-                        toolbar
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="dropdown">
+                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    None
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">None</a>
+                                    <a class="dropdown-item" href="#">All</a>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-10">
+                                <button class="btn btn-secondary" type="button">
+                                    Mark entry time
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Mark exit time
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Export
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Delete
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Block
+                                </button>
+                            </div>
+                        </div>
                       </div>
                     </div>
                     <!--/.row-->
-                    <table class="table table-hover table-outline mb-0 hidden-sm-down" ng-hide="!appointmentToday">
-                        <thead class="thead-default">
-                            <tr>
-                              <th class="text-center"></th>
-                                <th class="text-center"><i class="icon-people"></i>
-                                </th>
-                                <th>Visitor</th>
-                                <th class="text-center">Visit to</th>
-                                <th>Host</th>
-                                <th class="text-center">Pass no</th>
-                                <th>Visit time & date</th>
-                                <th>Entry time</th>
-                                <th>Exit time</th>
-                                <th class="text-center">Device</th>
-                                <th class="text-center">Activity</th>
-                            </tr>
-                        </thead>
-                        <!-- Today Appointment -->
-                        <tbody>
-                            <tr>
-                              <td class="text-center">
-                                <input type="checkbox" checked>
-                              </td>
-                                <td class="text-center">
-                                    <div class="avatar">
-                                        <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
-                                        <span class="avatar-status badge-success" ng-class="active"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="ng-binding">Yiorgos Avraamu today</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <div>Company Name</div>
-                                </td>
-                                <td>
-                                    <div class="ng-binding">Yiorgos Avraamu</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <small class="text-muted">1212122</small>
-                                </td>
-                                <td>
-                                    <div class="small text-muted">12.30 PM</div>
-                                    <strong>12/12/2017</strong>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-warning" href="#">Mark entry <i class="icon-clock icons"></i></a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-warning" href="#">Mark exit <i class="icon-clock icons"></i></a>
-                                </td>
-                                <td class="text-center">
-                                  <i class="icon-screen-desktop"></i>
-                                </td>
-                                <td class="text-center">
-                                  <a class="btn btn-outline-success" href="#"><i class="icon-pencil icons"></i></a>
-                                  <a class="btn btn-outline-danger" href="#"><i class="icon-ban icons"></i></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
+                    <div class="row padding-top-16">
+                    <!-- Today -->
+                    <table class="table" ng-hide="!appointmentToday">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Image</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Pass no</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Host</th>
+                          <th scope="col">Company</th>
+                          <th scope="col">Purpose</th>
+                          <th scope="col">Entry Time</th>
+                          <th scope="col">Exit Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="tAppointment in todaysAppointment">
+                          <td><input type="checkbox"></td>
+                          <th scope="row">
+                            <div class="avatar">
+                                <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                            </div>
+                          </th>
+                          <td>{{tAppointment.status}}</td>
+                          <td>{{tAppointment.visitorpassno}}</td>
+                          <td>{{tAppointment.visitorname}}</td>
+                          <td>{{tAppointment.visiteename}}</td>
+                          <td>{{tAppointment.fromcompany}}</td>
+                          <td>{{tAppointment.purpose}}</td>
+                          <td>{{ !tAppointment.gateentrytime && '--' || tAppointment.gateentrytime }}</td>
+                          <td>{{ !tAppointment.gateexittime && '--' || tAppointment.gateexittime }}</td>
+                        </tr>
+                      </tbody>
                     </table>
-                     <table class="table table-hover table-outline mb-0 hidden-sm-down" ng-hide="!appointmentOverstay">
-                        <thead class="thead-default">
-                            <tr>
-                              <th class="text-center"></th>
-                                <th class="text-center"><i class="icon-people"></i>
-                                </th>
-                                <th>Visitor</th>
-                                <th class="text-center">Visit to</th>
-                                <th>Host</th>
-                                <th class="text-center">Pass no</th>
-                                <th>Visit time & date</th>
-                                <th>Entry time</th>
-                                <th>Exit time</th>
-                                <th class="text-center">Device</th>
-                                <th class="text-center">Activity</th>
-                            </tr>
-                        </thead>
-                        <!-- overstay Appointment -->
-                        <tbody>
-                            <tr>
-                              <td class="text-center">
-                                <input type="checkbox" checked>
-                              </td>
-                                <td class="text-center">
-                                    <div class="avatar">
-                                        <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
-                                        <span class="avatar-status badge-success" ng-class="active"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="ng-binding">Yiorgos Avraamu overstay</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <div>Company Name</div>
-                                </td>
-                                <td>
-                                    <div class="ng-binding">Yiorgos Avraamu</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <small class="text-muted">1212122</small>
-                                </td>
-                                <td>
-                                    <div class="small text-muted">12.30 PM</div>
-                                    <strong>12/12/2017</strong>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-warning" href="#">Mark entry <i class="icon-clock icons"></i></a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-warning" href="#">Mark exit <i class="icon-clock icons"></i></a>
-                                </td>
-                                <td class="text-center">
-                                  <i class="icon-screen-desktop"></i>
-                                </td>
-                                <td class="text-center">
-                                  <a class="btn btn-outline-success" href="#"><i class="icon-pencil icons"></i></a>
-                                  <a class="btn btn-outline-danger" href="#"><i class="icon-ban icons"></i></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
+                    <!-- Overstay -->
+                    <table class="table" ng-hide="!appointmentOverstay">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Image</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Pass no</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Host</th>
+                          <th scope="col">Company</th>
+                          <th scope="col">Entry Time</th>
+                          <th scope="col">Exit Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox"></td>
+                          <th scope="row">
+                            <div class="avatar">
+                                <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                            </div>
+                          </th>
+                          <td>Mark overstay</td>
+                          <td>Otto</td>
+                          <td>@mdo</td>
+                          <td>tete</td>
+                          <td>hdhsa</td>
+                          <td>dadsda</td>
+                          <td>adasdsa</td>
+                        </tr>
+                      </tbody>
                     </table>
-                        <!-- Vip Appointment-->
-                    <table class="table table-hover table-outline mb-0 hidden-sm-down" ng-hide="!appointmentVip">
-                        <thead class="thead-default">
-                            <tr>
-                              <th class="text-center"></th>
-                                <th class="text-center"><i class="icon-people"></i>
-                                </th>
-                                <th>Visitor</th>
-                                <th class="text-center">Visit to</th>
-                                <th>Host</th>
-                                <th class="text-center">Pass no</th>
-                                <th>Visit time & date</th>
-                                <th>Entry time</th>
-                                <th>Exit time</th>
-                                <th class="text-center">Device</th>
-                                <th class="text-center">Activity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                              <td class="text-center">
-                                <input type="checkbox" checked>
-                              </td>
-                                <td class="text-center">
-                                    <div class="avatar">
-                                        <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
-                                        <span class="avatar-status badge-success" ng-class="active"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="ng-binding">Yiorgos Avraamu vip</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <div>Company Name</div>
-                                </td>
-                                <td>
-                                    <div class="ng-binding">Yiorgos Avraamu</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <small class="text-muted">1212122</small>
-                                </td>
-                                <td>
-                                    <div class="small text-muted">12.30 PM</div>
-                                    <strong>12/12/2017</strong>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-warning" href="#">Mark entry <i class="icon-clock icons"></i></a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-warning" href="#">Mark exit <i class="icon-clock icons"></i></a>
-                                </td>
-                                <td class="text-center">
-                                  <i class="icon-screen-desktop"></i>
-                                </td>
-                                <td class="text-center">
-                                  <a class="btn btn-outline-success" href="#"><i class="icon-pencil icons"></i></a>
-                                  <a class="btn btn-outline-danger" href="#"><i class="icon-ban icons"></i></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
+                    <!-- Vip Appointment-->
+                    <table class="table" ng-hide="!appointmentVip">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Image</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Pass no</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Host</th>
+                          <th scope="col">Company</th>
+                          <th scope="col">Entry Time</th>
+                          <th scope="col">Exit Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="vAppointment in vipappointment">
+                        <td><input type="checkbox"></td>
+                          <th scope="row">
+                            <div class="avatar">
+                                <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                            </div>
+                          </th>
+                          <td>{{vAppointment.status}}</td>
+                          <td>{{vAppointment.visitorpassno}}</td>
+                          <td>{{vAppointment.visitorname}}</td>
+                          <td>{{vAppointment.visiteename}}</td>
+                          <td>{{vAppointment.fromcompany}}</td>
+                          <td>{{vAppointment.purpose}}</td>
+                          <td>{{ !vAppointment.gateentrytime && '--' || vAppointment.gateentrytime }}</td>
+                          <td>{{ !vAppointment.gateexittime && '--' || vAppointment.gateexittime }}</td>
+                        </tr>
+                      </tbody>
                     </table>
                 </div>
             </div>

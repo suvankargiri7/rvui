@@ -75,3 +75,7 @@
 .app-header.navbar .nav-item .nav-link > .img-avatar, .app-header.navbar .nav-item .dropdown-toggle > .img-avatar {
   height: 55px !important;
 }
+.avatar .img-avatar {
+  width: 45px !important ;
+  height: 45px !important ;
+}

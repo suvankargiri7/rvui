@@ -40,6 +40,7 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
     var companyDetailsRequest = $companyServices.companyDetailsRequest(companyRequestData);
     companyDetailsRequest.then(function(Response){
       $companyServices.companyDetails = Response;
+      $sessionStorage.companyDetails = Response;
         var visitorIdCardRequestData = {
           "userid": $sessionStorage.userDetails.userid,
           "uuid": uuidCookie
@@ -47,6 +48,7 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
         var visitorCardRequest = $visitorServices.visitorCardTypeRequest(visitorIdCardRequestData);
         visitorCardRequest.then(function(visitorresponse1){
           $visitorServices.visitorCardTypes = visitorresponse1;
+          $sessionStorage.visitorCardTypes = visitorresponse1;
             var visitorSexRequestData = {
               "userid": $sessionStorage.userDetails.userid,
               "uuid": uuidCookie
@@ -54,6 +56,7 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
             var visitorSexTypesRequest = $visitorServices.visitorSexTypeRequest(visitorSexRequestData);
             visitorSexTypesRequest.then(function(visitorreponse2){
               $visitorServices.visitorSexTypes = visitorreponse2;
+              $sessionStorage.visitorSexTypes = visitorreponse2;
               var companyPreferenceRequestData = {
                 "companyid": $sessionStorage.userDetails.companyid,
                 "userid": $sessionStorage.userDetails.userid,
@@ -62,6 +65,7 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
               var companyPreferenceRequest = $companyServices.companyPreferenceRequest(companyPreferenceRequestData);
               companyPreferenceRequest.then(function(companyPreferenceresponse){
                 $companyServices.companyPreferenceDetails = companyPreferenceresponse;
+                $sessionStorage.companyPreferenceDetails = companyPreferenceresponse;
                 if ($companyServices.companyPreferenceDetails.excludemobileapps > 1)
                   {
                     excludemobileapps = 1;
@@ -82,10 +86,10 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
                   }
                   if ($companyServices.companyPreferenceDetails.excludemobileapps > 1)
                   {
-                    excludemobileapps = 1;
+                    $sessionStorage.excludemobileapps = 1;
                   }
                   else{
-                    excludemobileapps = 0;
+                    $sessionStorage.excludemobileapps = 0;
                   }
                   if($companyServices.companyPreferenceDetails.usemaildelivery > 0) {
                     $scope.displayMailRecords = true;
@@ -106,7 +110,7 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
                   var companyPurposeStringRequest = $companyServices.companyPurposeStringRequest(companypurposeStringrequestData);
                   companyPurposeStringRequest.then(function(compantpurposeStringresponse){
                     $companyServices.companyPurposeStringDetail = compantpurposeStringresponse;
-
+                    $sessionStorage.companyPurposeStringDetail = compantpurposeStringresponse;
                     var appointmentStatusRequestData = {
                       "userid":$sessionStorage.userDetails.userid,
                       "uuid": uuidCookie
@@ -114,6 +118,7 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
                     var appointstatusrequest = $appointmentServices.appointmentApproveRequest(appointmentStatusRequestData);
                     appointstatusrequest.then(function(appointmentApproveStatusresponse){
                         $appointmentServices.appointmentApproveStatus = appointmentApproveStatusresponse;
+                        $sessionStorage.appointmentApproveStatus = compantpurposeStringresponse;
                     });
                   });
               });
