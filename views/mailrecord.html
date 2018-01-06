@@ -1,4 +1,4 @@
-<div class="animated fadeIn">
+<div class="animated fadeIn" ng-controller="mailrecordController">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -67,127 +67,57 @@
                       </div>
                     <div class="row">
                       <div class="col-sm-12">
-                        toolbar
-                      </div>
+                           <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="dropdown">
+                                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        None
+                                      </button>
+                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">None</a>
+                                        <a class="dropdown-item" href="#">All</a>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <button class="btn btn-secondary" type="button">
+                                        Export
+                                    </button>
+                                    <button class="btn btn-secondary" type="button">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        
+                        <div class="padding-top-16">
+                        <!--/.row-->
+                        <table class="table">
+                              <thead>
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">ID</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Name</th>
+                                  <th scope="col">Mobile</th>
+                                  <th scope="col">Tracking ID</th>
+                                  <th scope="col">Courier Company</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td><input type="checkbox"></td>
+                                  <td>Id</td>
+                                  <td>Status</td>
+                                  <td>Name</td>
+                                  <td>Mobile</td>
+                                  <td>Tracking ID</td>
+                                  <td>Courier Company</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                        </div>
                     </div>
-                    <!--/.row-->
-                    <table class="table table-hover table-outline mb-0 hidden-sm-down">
-                        <thead class="thead-default">
-                            <tr>
-                              <th class="text-center"></th>
-                                <th class="text-center"><i class="icon-people"></i>
-                                </th>
-                                <th>Visitor</th>
-                                <th class="text-center">Visit to</th>
-                                <th>Host</th>
-                                <th class="text-center">Pass no</th>
-                                <th>Visit time & date</th>
-                                <th>Entry time</th>
-                                <th>Exit time</th>
-                                <th class="text-center">Device</th>
-                                <th class="text-center">Activity</th>
-                            </tr>
-                        </thead>
-                        <tbody ng-controller="usersTableCtrl">
-                            <tr ng-repeat="user in users">
-                              <td class="text-center">
-                                <input type="checkbox" />
-                              </td>
-                                <td class="text-center">
-                                    <div class="avatar">
-                                        <img ng-src="img/avatars/{{ user.avatar }}" class="img-avatar" alt="admin@bootstrapmaster.com">
-                                        <span class="avatar-status" ng-class="{ 'badge-success' : user.status == 'active',
-                    'badge-warning' : user.status == 'away',
-                    'badge-danger'  : user.status == 'busy',
-                    'badge-default' : user.status == 'offline' }"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>{{ user.name }}</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <div>Company Name</div>
-                                </td>
-                                <td>
-                                    <div>{{ user.name }}</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <small class="text-muted">1212122</small>
-                                </td>
-                                <td>
-                                    <div class="small text-muted">12.30 PM</div>
-                                    <strong>12/12/2017</strong>
-                                </td>
-                                <td>
-                                    <div class="small text-muted">12/12/2017</div>
-                                    <strong>12.30 PM</strong>
-                                </td>
-                                <td>
-                                    <div class="small text-muted">12/12/2017</div>
-                                    <strong>02.30 PM</strong>
-                                </td>
-                                <td class="text-center">
-                                  <i class="icon-screen-desktop"></i>
-                                </td>
-                                <td class="text-center">
-                                  <a class="btn btn-outline-success" href="#"><i class="icon-pencil icons"></i></a>
-                                  <a class="btn btn-outline-danger" href="#"><i class="icon-ban icons"></i></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                              <td class="text-center">
-                                <input type="checkbox" checked>
-                              </td>
-                                <td class="text-center">
-                                    <div class="avatar">
-                                        <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
-                                        <span class="avatar-status badge-success" ng-class="active"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="ng-binding">Yiorgos Avraamu</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <div>Company Name</div>
-                                </td>
-                                <td>
-                                    <div class="ng-binding">Yiorgos Avraamu</div>
-                                    <div class="small text-muted">
-                                        <span>Mobile</span>
-                                        : 6525252525</div>
-                                </td>
-                                <td class="text-center">
-                                    <small class="text-muted">1212122</small>
-                                </td>
-                                <td>
-                                    <div class="small text-muted">12.30 PM</div>
-                                    <strong>12/12/2017</strong>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-warning" href="#">Mark entry <i class="icon-clock icons"></i></a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-warning" href="#">Mark exit <i class="icon-clock icons"></i></a>
-                                </td>
-                                <td class="text-center">
-                                  <i class="icon-screen-desktop"></i>
-                                </td>
-                                <td class="text-center">
-                                  <a class="btn btn-outline-success" href="#"><i class="icon-pencil icons"></i></a>
-                                  <a class="btn btn-outline-danger" href="#"><i class="icon-ban icons"></i></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                   </div>
                 </div>
             </div>

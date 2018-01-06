@@ -14,8 +14,14 @@ angular
   .state('app.main', {
     url: '/appointment',
     templateUrl: 'views/appointment.html',
-    params: { subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit' },
+    params: { subtitle: 'Appointment Dashboard' },
     controller: 'appointmentController'
+  })
+  .state('app.mail', {
+    url: '/mailrecord',
+    templateUrl: 'views/mailrecord.html',
+    params: { subtitle: 'MailRecord Dashboard' },
+    controller: 'mailrecordController'
   })
   .state('appSimple', {
     abstract: true,

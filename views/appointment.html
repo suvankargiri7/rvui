@@ -50,10 +50,11 @@
                             <!--/.row-->
                             <hr class="mt-0">
                         </div>
-
-
                     </div>
-                    <div class="row">
+
+
+
+                    <div class="row" ng-hide="!appointmentToday">
                       <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-2">
@@ -85,114 +86,211 @@
                                 </button>
                             </div>
                         </div>
-                      </div>
-                    </div>
+                     
                     <!--/.row-->
-                    <div class="row padding-top-16">
-                    <!-- Today -->
-                    <table class="table" ng-hide="!appointmentToday">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Image</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Pass no</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Host</th>
-                          <th scope="col">Company</th>
-                          <th scope="col">Purpose</th>
-                          <th scope="col">Entry Time</th>
-                          <th scope="col">Exit Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr ng-repeat="tAppointment in todaysAppointment">
-                          <td><input type="checkbox"></td>
-                          <th scope="row">
-                            <div class="avatar">
-                                <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
-                            </div>
-                          </th>
-                          <td>{{tAppointment.status}}</td>
-                          <td>{{tAppointment.visitorpassno}}</td>
-                          <td>{{tAppointment.visitorname}}</td>
-                          <td>{{tAppointment.visiteename}}</td>
-                          <td>{{tAppointment.fromcompany}}</td>
-                          <td>{{tAppointment.purpose}}</td>
-                          <td>{{ !tAppointment.gateentrytime && '--' || tAppointment.gateentrytime }}</td>
-                          <td>{{ !tAppointment.gateexittime && '--' || tAppointment.gateexittime }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <!-- Overstay -->
-                    <table class="table" ng-hide="!appointmentOverstay">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Image</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Pass no</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Host</th>
-                          <th scope="col">Company</th>
-                          <th scope="col">Entry Time</th>
-                          <th scope="col">Exit Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input type="checkbox"></td>
-                          <th scope="row">
-                            <div class="avatar">
-                                <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
-                            </div>
-                          </th>
-                          <td>Mark overstay</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                          <td>tete</td>
-                          <td>hdhsa</td>
-                          <td>dadsda</td>
-                          <td>adasdsa</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <!-- Vip Appointment-->
-                    <table class="table" ng-hide="!appointmentVip">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Image</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Pass no</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Host</th>
-                          <th scope="col">Company</th>
-                          <th scope="col">Entry Time</th>
-                          <th scope="col">Exit Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr ng-repeat="vAppointment in vipappointment">
-                        <td><input type="checkbox"></td>
-                          <th scope="row">
-                            <div class="avatar">
-                                <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
-                            </div>
-                          </th>
-                          <td>{{vAppointment.status}}</td>
-                          <td>{{vAppointment.visitorpassno}}</td>
-                          <td>{{vAppointment.visitorname}}</td>
-                          <td>{{vAppointment.visiteename}}</td>
-                          <td>{{vAppointment.fromcompany}}</td>
-                          <td>{{vAppointment.purpose}}</td>
-                          <td>{{ !vAppointment.gateentrytime && '--' || vAppointment.gateentrytime }}</td>
-                          <td>{{ !vAppointment.gateexittime && '--' || vAppointment.gateexittime }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <div class="padding-top-16">
+                        <!-- Today -->
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Image</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Pass no</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Host</th>
+                              <th scope="col">Company</th>
+                              <th scope="col">Purpose</th>
+                              <th scope="col">Entry Time</th>
+                              <th scope="col">Exit Time</th>
+                            </tr>
+                          </thead>
+                          <tbody ng-hide="todaysAppointment.length == 0">
+                            <tr ng-repeat="tAppointment in todaysAppointment">
+                              <td><input type="checkbox"></td>
+                              <th scope="row">
+                                <div class="avatar">
+                                    <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                                </div>
+                              </th>
+                              <td>{{tAppointment.status}}</td>
+                              <td>{{tAppointment.visitorpassno}}</td>
+                              <td>{{tAppointment.visitorname}}</td>
+                              <td>{{tAppointment.visiteename}}</td>
+                              <td>{{tAppointment.fromcompany}}</td>
+                              <td>{{tAppointment.purpose}}</td>
+                              <td>{{ !tAppointment.gateentrytime && '--' || tAppointment.gateentrytime }}</td>
+                              <td>{{ !tAppointment.gateexittime && '--' || tAppointment.gateexittime }}</td>
+                            </tr>
+                          </tbody>
+                          <tbody ng-show="todaysAppointment.length == 0">
+                            <tr>
+                                <td colspan="8"> No Data Found </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
                 </div>
+                 </div>
+
+
+
+                <div class="row" ng-hide="!appointmentOverstay">
+                      <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="dropdown">
+                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    None
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">None</a>
+                                    <a class="dropdown-item" href="#">All</a>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-10">
+                                <button class="btn btn-secondary" type="button">
+                                    Mark entry time
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Mark exit time
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Export
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Delete
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Block
+                                </button>
+                            </div>
+                        </div>
+                     
+                    
+                    <!--/.row-->
+                    <div class="padding-top-16">
+                        <!-- Overstay -->
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Image</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Pass no</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Host</th>
+                              <th scope="col">Company</th>
+                              <th scope="col">Entry Time</th>
+                              <th scope="col">Exit Time</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><input type="checkbox"></td>
+                              <th scope="row">
+                                <div class="avatar">
+                                    <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                                </div>
+                              </th>
+                              <td>Mark overstay</td>
+                              <td>Otto</td>
+                              <td>@mdo</td>
+                              <td>tete</td>
+                              <td>hdhsa</td>
+                              <td>dadsda</td>
+                              <td>adasdsa</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+                 </div>
+
+            <div class="row" ng-hide="!appointmentVip">
+                      <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="dropdown">
+                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    None
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">None</a>
+                                    <a class="dropdown-item" href="#">All</a>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-10">
+                                <button class="btn btn-secondary" type="button">
+                                    Mark entry time
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Mark exit time
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Export
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Delete
+                                </button>
+                                <button class="btn btn-secondary" type="button">
+                                    Block
+                                </button>
+                            </div>
+                        </div>
+                     
+                    <!--/.row-->
+                    <div class="padding-top-16">
+                        <!-- Vip Appointment-->
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Image</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Pass no</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Host</th>
+                              <th scope="col">Company</th>
+                              <th scope="col">Entry Time</th>
+                              <th scope="col">Exit Time</th>
+                            </tr>
+                          </thead>
+                          <tbody ng-hide="vipappointment.length == 0">
+                            <tr ng-repeat="vAppointment in vipappointment">
+                            <td><input type="checkbox"></td>
+                              <th scope="row">
+                                <div class="avatar">
+                                    <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                                </div>
+                              </th>
+                              <td>{{vAppointment.status}}</td>
+                              <td>{{vAppointment.visitorpassno}}</td>
+                              <td>{{vAppointment.visitorname}}</td>
+                              <td>{{vAppointment.visiteename}}</td>
+                              <td>{{vAppointment.fromcompany}}</td>
+                              <td>{{vAppointment.purpose}}</td>
+                              <td>{{ !vAppointment.gateentrytime && '--' || vAppointment.gateentrytime }}</td>
+                              <td>{{ !vAppointment.gateexittime && '--' || vAppointment.gateexittime }}</td>
+                            </tr>
+                          </tbody>
+                          <tbody ng-show="vipappointment.length == 0">
+                            <tr>
+                                <td colspan="8"> No Data Found </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
             </div>
+             </div>
+
+
+
+
+
+
         </div>
         <!--/.col-->
     </div>
