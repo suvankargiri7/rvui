@@ -2,7 +2,7 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-item">
-                <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.main')}">
+                <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.main')} && {open: $state.includes('app.history')}">
                     <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.main')}" ui-sref="app.main"><i class="fa fa-clock-o"></i> Appointments</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
@@ -12,7 +12,7 @@
                             <a class="nav-link" ui-sref-active="active" ui-sref="app.main.import"><i class="fa fa-upload"></i> Import from excel</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" ui-sref-active="active" ui-sref="app.main.import"><i class="fa fa-history"></i> History</a>
+                            <a class="nav-link" ui-sref-active="active" ui-sref="app.history"><i class="fa fa-history"></i> History</a>
                         </li>
                     </ul>
                 </li>

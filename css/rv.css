@@ -79,3 +79,6 @@
   width: 45px !important ;
   height: 45px !important ;
 }
+.mailrecord datepicker {
+  margin-bottom: 16px;
+}

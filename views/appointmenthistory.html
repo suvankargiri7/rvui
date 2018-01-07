@@ -1,33 +1,9 @@
-<div class="animated fadeIn" ng-controller="mailrecordController">
+<div class="animated fadeIn" ng-controller="appointmentHistoryController">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-block padding-top-0">
                     <div class="row">
-                      <div class="col-sm-2 col-lg-2">
-                          <div class="row">
-                              <div class="col-sm-12 col-lg-12">
-                                  <div class="callout callout-success">
-                                    <small class="text-muted">Mail of</small>
-                                    <br>
-                                    <div class="btn-group">
-                                      <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                                        <span ng-if="mailRecord">Today</span>
-                                        <span ng-if="allMailreord">All</span>
-                                      </button>
-                                      <div class="dropdown-menu">
-                                        <a class="dropdown-item" ng-click="todayMailRecord()">Today &nbsp;<span class="badge badge-pill badge-info">{{totalTodaymail}}</span></a>
-                                        <a class="dropdown-item" ng-click="allMailrecord()">All &nbsp;<span class="badge badge-pill badge-info">5</span></a>
-                                      </div>
-                                    </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <!--/.row-->
-                          <hr class="mt-0">
-                      </div>
-
                         <!--/.col-->
                         <div class="col-sm-4 col-lg-5">
                             <div class="row">
@@ -44,7 +20,7 @@
                             <!--/.row-->
                             <hr class="mt-0">
                         </div>
-                        <div class="col-sm-6 col-lg-5 mailrecord" ng-if="allMailreord">
+                        <div class="col-sm-6 col-lg-5 mailrecord">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="callout callout-info">
@@ -101,12 +77,15 @@
                               <thead>
                                 <tr>
                                   <th scope="col">#</th>
-                                  <th scope="col">ID</th>
+                                  <th scope="col">Image</th>
                                   <th scope="col">Status</th>
+                                  <th scope="col">Pass no</th>
                                   <th scope="col">Name</th>
-                                  <th scope="col">Mobile</th>
-                                  <th scope="col">Tracking ID</th>
-                                  <th scope="col">Courier Company</th>
+                                  <th scope="col">Host</th>
+                                  <th scope="col">Company</th>
+                                  <th scope="col">Purpose</th>
+                                  <th scope="col">Entry Time</th>
+                                  <th scope="col">Exit Time</th>
                                 </tr>
                               </thead>
                               <tbody ng-if="todayMailAvailable">

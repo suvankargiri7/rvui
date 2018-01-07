@@ -17,6 +17,12 @@ angular
     params: { subtitle: 'Appointment Dashboard' },
     controller: 'appointmentController'
   })
+  .state('app.history', {
+    url: '/appointment/history',
+    templateUrl: 'views/appointmenthistory.html',
+    params: { subtitle: 'Appointment History' },
+    controller: 'appointmentHistoryController'
+  })
   .state('app.mail', {
     url: '/mailrecord',
     templateUrl: 'views/mailrecord.html',

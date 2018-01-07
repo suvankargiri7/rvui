@@ -28,6 +28,8 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
     $scope.displayMailRecords = false;
     $scope.useOverstay = false;
     $scope.useVip = false;
+    $scope.mailRecord = true;
+    $scope.allMailreord = false;
     var excludemobileapps = null;
     var uuidCookie = $cookies.get('uuid');
 
