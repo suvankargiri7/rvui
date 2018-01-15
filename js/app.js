@@ -18,7 +18,9 @@ angular
   'angular-uuid',
   'ngStorage',
   'ngCookies',
-  '720kb.datepicker'
+  '720kb.datepicker',
+  'ngSanitize', 
+  'ngCsv'
 ])
 
 .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {

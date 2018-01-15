@@ -36,7 +36,7 @@
                                         <small class="text-muted">To mail/From mail/Mail subject</small>
                                         <br>
                                         <div class="input-group">
-                                          <input type="text" id="input2-group2" name="input2-group2" class="form-control" placeholder="Type">
+                                          <input type="text" id="input2-group2" name="input2-group2" class="form-control" placeholder="Search MailRecord" ng-model="mailrecordSearch">
                                       </div>
                                     </div>
                                 </div>
@@ -77,16 +77,18 @@
                                 <div class="col-sm-2">
                                     <div class="dropdown">
                                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        None
+                                        <span ng-if="selection.length < 1">None</span>
+                                        <span ng-if="selection.length > 0 && selection.length < todayMails.length">Selected</span>
+                                        <span ng-if="selection.length == todayMails.length">All</span>
                                       </button>
                                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">None</a>
-                                        <a class="dropdown-item" href="#">All</a>
+                                        <a class="dropdown-item" href="#" ng-click="unselectAllToday()">None</a>
+                                        <a class="dropdown-item" href="#" ng-click="selectAllToday()">All</a>
                                       </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-10">
-                                    <button class="btn btn-secondary" type="button">
+                                    <button class="btn btn-secondary" type="button" ng-if="selection.length > 1">
                                         Export
                                     </button>
                                     <button class="btn btn-secondary" type="button">
@@ -107,25 +109,32 @@
                                   <th scope="col">Mobile</th>
                                   <th scope="col">Tracking ID</th>
                                   <th scope="col">Courier Company</th>
+                                  <th scope="col">Details</th>
                                 </tr>
                               </thead>
                               <tbody ng-if="todayMailAvailable">
-                                <tr ng-repeat = "todayMail in todayMails">
-                                  <td><input type="checkbox"></td>
+                                <tr ng-repeat = "todayMail in todayMails | filter: mailrecordSearch">
+                                  <td><input type="checkbox"
+                                          name="selectedFruits[]"
+                                          value="{{todayMail.id}}"
+                                          ng-model="todayMail.selected"
+                                          ng-checked="selection.indexOf(todayMail.id) > -1"
+                                          ng-click="toggleSelection(todayMail)"></td>
                                   <td>{{todayMail.id}}</td>
                                   <td>
                                     <span class="label btn-success" ng-if="todayMail.iscollected==1">Collected</span>
-                                    <span class="label btn-danger" ng-if="todayMail.iscollected==0">Pending</span>
+                                    <span class="label btn-info" ng-if="todayMail.iscollected==0">Not Collected</span>
                                   </td>
                                   <td>{{todayMail.name}}</td>
                                   <td>{{todayMail.mobile}}</td>
-                                  <td>{{todayMail.trackingid}}</td>
-                                  <td>{{todayMail.deliverycompany}}</td>
+                                  <td>{{ !todayMail.trackingid && '--' || todayMail.trackingid }}</td>
+                                  <td>{{ !todayMail.deliverycompany && '--' || todayMail.deliverycompany }}</td>
+                                  <td><a ui-sref="app.mailDetails({id:todayMail.id, year: todayMail.year})"> View </a></td>
                                 </tr>
                               </tbody>
                               <tbody ng-if="!todayMailAvailable">
                                 <tr>
-                                  <td colspan="7">No Data Available</td>
+                                 <td colspan="7">No Data Available</td>
                                 </tr>
                               </tbody>
                             </table>

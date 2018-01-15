@@ -68,6 +68,8 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
               companyPreferenceRequest.then(function(companyPreferenceresponse){
                 $companyServices.companyPreferenceDetails = companyPreferenceresponse;
                 $sessionStorage.companyPreferenceDetails = companyPreferenceresponse;
+                setAppointmentDownloadTemplateSettings(companyPreferenceresponse);
+                setMailRecordDownloadTemplateSettings(companyPreferenceresponse);
                 if ($companyServices.companyPreferenceDetails.excludemobileapps > 1)
                   {
                     excludemobileapps = 1;
@@ -149,6 +151,80 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
     $scope.appointmentToday = true;
     $scope.appointmentOverstay = false;
     $scope.appointmentVip = false;
+  }
+
+  function setAppointmentDownloadTemplateSettings(companyPreferenceSetting) {
+    var templateHeader = [];
+    templateHeader.push('Name');
+    templateHeader.push('Number');
+
+    if(companyPreferenceSetting.useaddress > 0){
+      templateHeader.push('Address');
+    }
+
+    if(companyPreferenceSetting.useelectronicdevices > 0) {
+      templateHeader.push('Device');
+    }
+
+    if(companyPreferenceSetting.usefromcompany > 0) {
+      templateHeader.push('From Company');
+    }
+
+    if(companyPreferenceSetting.usegender > 0) {
+      templateHeader.push('Gender');
+    }
+
+     templateHeader.push('Host');
+
+    if(companyPreferenceSetting.usehostemail > 0) {
+      templateHeader.push('Host Email');
+    }
+
+    if(companyPreferenceSetting.useidcard > 0) {
+      templateHeader.push('Id card');
+    }
+
+    if(companyPreferenceSetting.usevipstatus > 1) {
+      templateHeader.push('Vip');
+    }
+    $scope.templateAppointmentHeader = templateHeader;
+  }
+
+  function setMailRecordDownloadTemplateSettings(companyPreferenceSetting) {
+    var templateHeader = [];
+    templateHeader.push('Name');
+    templateHeader.push('Number');
+
+    if(companyPreferenceSetting.useaddress > 0){
+      templateHeader.push('Address');
+    }
+
+    if(companyPreferenceSetting.useelectronicdevices > 0) {
+      templateHeader.push('Device');
+    }
+
+    if(companyPreferenceSetting.usefromcompany > 0) {
+      templateHeader.push('From Company');
+    }
+
+    if(companyPreferenceSetting.usegender > 0) {
+      templateHeader.push('Gender');
+    }
+
+     templateHeader.push('Host');
+
+    if(companyPreferenceSetting.usehostemail > 0) {
+      templateHeader.push('Host Email');
+    }
+
+    if(companyPreferenceSetting.useidcard > 0) {
+      templateHeader.push('Id card');
+    }
+
+    if(companyPreferenceSetting.usevipstatus > 1) {
+      templateHeader.push('Vip');
+    }
+    $scope.templateMailRecordHeader = templateHeader;
   }
 
 }

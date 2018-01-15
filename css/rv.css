@@ -76,9 +76,80 @@
   height: 55px !important;
 }
 .avatar .img-avatar {
-  width: 45px !important ;
-  height: 45px !important ;
+  width: 50px !important ;
+  height: 60px !important ;
 }
 .mailrecord datepicker {
   margin-bottom: 16px;
 }
+.btn-primary {
+  background-color: #1976D2 !important;
+   border-color: #1976D2 !important;
+}
+.btn-outline-primary:hover {
+  background-color: #1976D2 !important;
+  }
+
+.btn-outline-primary {
+  border-color: #1976D2 !important;
+}
+
+.btn-info {
+  background-color: #1976D2;
+  border-color: #1976D2; 
+}
+
+.btn-info:hover {
+    background-color: #1976D2;
+    border-color: #1976D2;
+}
+
+.badge-info {
+  background-color: #1976D2 ; 
+}
+
+.btn-danger {
+  background-color: #F44336 !important;
+  border-color: #F44336 !important;
+}
+.btn-outline-danger:hover {
+  background-color: #F44336 !important;
+  }
+
+.btn-outline-danger {
+  border-color: #F44336 !important;
+  /*color: #000 !important;*/
+}
+
+.btn-danger {
+  /*color: #000;*/
+  background-color: #F44336;
+  border-color: #F44336; 
+}
+
+.btn-danger:hover {
+  /*color: #000;*/
+  background-color: #F44336;
+  border-color: #F44336; 
+}
+
+
+.badge-danger {
+  background-color:#F44336 ; 
+}
+
+
+.font-15 {
+  font-size: 15px !important;
+}
+
+.margin-top-15 {
+  margin-top:15px;
+}
+.img-avatar {
+  border-radius: 0px !important;
+}
+
+.table th, .table td {
+  vertical-align: middle !important;
+}   

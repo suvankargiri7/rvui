@@ -16,7 +16,8 @@
     "angular-chart.js": "^1.0.3",
     "ngstorage": "^0.3.11",
     "angular-cookies": "^1.6.8",
-    "angularjs-datepicker": "^2.1.23"
+    "angularjs-datepicker": "^2.1.23",
+    "ng-csv": "^0.3.6"
   },
   "private": true
 }

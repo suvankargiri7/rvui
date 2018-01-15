@@ -1,0 +1,50 @@
+<div class="animated fadeIn" ng-controller="mailrecordDetailController">
+    <div class="row">
+        <div class="col-md-12">
+           <div class="card">
+              <div class="card-block padding-top-10">
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <button class="btn btn-secondary" type="button" ng-click="backToMailRecord()">
+                              Back
+                          </button>
+                      </div>
+                  </div>
+                  <div class="row margin-top-15">
+                    <div class="col-sm-12">
+                      <div class="card">
+                        
+                          <div class="card-header">
+                           Mailrecord Details
+                          </div>
+                          <div class="card-body ">
+                              <div class="card-block">
+                                <strong>Name:</strong> {{ !mailDetail.name && '--' || mailDetail.name }}
+                              </div>
+                              <div class="card-block">
+                                <strong>Mobile No: </strong> {{ !mailDetail.mobile && '--' || mailDetail.mobile }}
+                              </div>
+                              <div class="card-block"> 
+                                <strong>Email: </strong>{{ !mailDetail.email && '--' || mailDetail.email }}
+                              </div>
+                              <div class="card-block">
+                                <strong>Tracking Id: </strong>{{ !mailDetail.trackingid && '--' || mailDetail.trackingid }}
+                              </div>
+                              <div class="card-block">
+                                <strong>Instruction: </strong>{{ !mailDetail.instructions && '--' || mailDetail.instructions }}
+                              </div>
+                              <div class="card-block">
+                                <strong>Remarks: </strong>{{ !mailDetail.remarks && '--' || mailDetail.remarks }}
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+           </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+
+</div>

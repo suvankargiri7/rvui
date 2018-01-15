@@ -17,6 +17,12 @@ angular
     params: { subtitle: 'Appointment Dashboard' },
     controller: 'appointmentController'
   })
+  .state('app.view',{
+    url: '/appointment/view',
+    templateUrl: "views/appointmentDetail.html",
+    params: { id: ':id'},
+    controller: 'appointmentDetailController'
+  })
   .state('app.history', {
     url: '/appointment/history',
     templateUrl: 'views/appointmenthistory.html',
@@ -28,6 +34,12 @@ angular
     templateUrl: 'views/mailrecord.html',
     params: { subtitle: 'MailRecord Dashboard' },
     controller: 'mailrecordController'
+  })
+  .state('app.mailDetails',{
+    url: '/mailrecord/view/:id',
+    templateUrl: 'views/mailrecorddetail.html',
+    params: { year: ':year' },
+    controller: 'mailrecordDetailController'
   })
   .state('appSimple', {
     abstract: true,

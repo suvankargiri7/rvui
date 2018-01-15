@@ -1,0 +1,94 @@
+<div class="animated fadeIn" ng-controller="appointmentDetailController">
+    <div class="row">
+        <div class="col-md-12">
+           <div class="card">
+              <div class="card-block padding-top-10">
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <button class="btn btn-secondary" type="button" ng-click="backToAppointment()">
+                              Back
+                          </button>
+                      </div>
+                  </div>
+                  <div class="row margin-top-15">
+                    <div class="col-sm-12">
+                      <div class="card">
+                        <div class="card-header">
+                          Appointment Details
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <figure class="figure">
+                            <img src="https://cppjs.com/api/visitor/visitorid/{{appointmentDetails.visitorid}}/photo/user/{{userid}}/uuid/{{uuid}}" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                          </figure>
+                        </div>
+                        <div class="col-sm-10">
+                          <dl class="row">
+                              <dt class="col-sm-3">Appointment Id</dt>
+                              <dd class="col-sm-9">{{appointmentDetails.id}}</dd>
+
+                              <dt class="col-sm-3">Status</dt>
+                              <dd class="col-sm-9" ng-if="appointmentDetails.isblocked < 1">{{appointmentDetails.status}}</dd>
+                              <dd class="col-sm-9" ng-if="appointmentDetails.isblocked > 0 ">Blocked</dd>
+
+
+                              <dt class="col-sm-3">Created On</dt>
+                              <dd class="col-sm-9">{{appointmentDetails.creationtime}}</dd>
+
+                              <dt class="col-sm-3 text-truncate">Visit Date</dt>
+                              <dd class="col-sm-9">{{appointmentDetails.visitdate}}</dd>
+                              <dt class="col-sm-3 text-truncate">Visit Expires</dt>
+                              <dd class="col-sm-9">{{appointmentDetails.validtill}}</dd>
+                              <dt class="col-sm-3 text-truncate">Pass Number</dt>
+                              <dd class="col-sm-9">{{appointmentDetails.visitorpassno}}</dd>
+                              <dt class="col-sm-3 text-truncate" ng-if="appointmentDetails.gateentrytime">Gate Entry Time</dt>
+                              <dd class="col-sm-9" ng-if="appointmentDetails.gateentrytime">{{appointmentDetails.gateentrytime}}</dd>
+                              <dt class="col-sm-3 text-truncate" ng-if="appointmentDetails.gateexittime">Gate Exit Time</dt>
+                              <dd class="col-sm-9" ng-if="appointmentDetails.gateexittime">{{appointmentDetails.gateexittime}}</dd>
+                              <dt class="col-sm-3 text-truncate" ng-if="appointmentDetails.buildingentrytime">Building Entry Time</dt>
+                              <dd class="col-sm-9" ng-if="appointmentDetails.buildingentrytime">{{appointmentDetails.buildingentrytime}}</dd>
+                              <dt class="col-sm-3 text-truncate" ng-if="appointmentDetails.buildingexittime">Building Exit Time</dt>
+                              <dd class="col-sm-9" ng-if="appointmentDetails.buildingexittime">{{appointmentDetails.buildingexittime}}</dd>
+                              <dt class="col-sm-3 text-truncate" ng-if="appointmentDetails.companyentrytime">Reception Entry Time</dt>
+                              <dd class="col-sm-9" ng-if="appointmentDetails.companyentrytime">{{appointmentDetails.companyentrytime}}</dd>
+                              <dt class="col-sm-3 text-truncate" ng-if="appointmentDetails.companyexittime">Reception Exit Time</dt>
+                              <dd class="col-sm-9" ng-if="appointmentDetails.companyexittime">{{appointmentDetails.companyexittime}}</dd>
+                              <dt class="col-sm-3">Visitor Name</dt>
+                              <dd class="col-sm-9">{{appointmentDetails.visitorname}}</dd>
+                              <dt class="col-sm-3">Visitor Mobile</dt>
+                              <dd class="col-sm-9">{{appointmentDetails.visitormobile}}</dd>
+                              <dt class="col-sm-3">Company From</dt>
+                              <dd class="col-sm-9">{{appointmentDetails.fromcompany}}</dd>
+                              <dt class="col-sm-3">Visitor's Other Details</dt>
+                              <dd class="col-sm-9">
+                                <p><strong>{{appointmentDetails.idtype}}</strong>: {{appointmentDetails.idno}}</p>
+                              </dd>
+                          </dl>
+                          <dl class="row">
+                              <dt class="col-sm-3">Company To Visit</dt>
+                              <dd class="col-sm-9">{{tocompany}}</dd>
+
+                              <dt class="col-sm-3">Purpose</dt>
+                              <dd class="col-sm-9">
+                                <p>{{appointmentDetails.purpose}}</p>
+                              </dd>
+                              <dt class="col-sm-3">Host Name</dt>
+                              <dd class="col-sm-9">{{appointmentDetails.visiteename}}</dd>
+                              <dt class="col-sm-3">Host Mobile</dt>
+                              <dd class="col-sm-9">{{ !appointmentDetails.visiteemobile && '--' || appointmentDetails.visiteemobile }}</dd>
+                              <dt class="col-sm-3" ng-if="appointmentDetails.remark">Remarks</dt>
+                              <dd class="col-sm-9" ng-if="appointmentDetails.remark">{{appointmentDetails.remark}}</dd>
+                          </dl>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+           </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+
+</div>

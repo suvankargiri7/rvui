@@ -9,10 +9,13 @@ navBarController.$inject = [
 	'$state',
 	'$window',
 	'$cookies',
-	'$userServices'
+	'$localStorage',
+    '$sessionStorage',
+	'$userServices',
+
 ];
 
-function navBarController($scope, uuid, $http, $state, $window, $cookies, $userServices) {
+function navBarController($scope, uuid, $http, $state, $window, $cookies, $localStorage, $sessionStorage, $userServices) {
 	$scope.user = {};
 	var userDetails = $userServices.userLoginDetail;
 	if(!userDetails){
@@ -44,6 +47,8 @@ function navBarController($scope, uuid, $http, $state, $window, $cookies, $userS
 					for (var key in cookiesAll) {
 						$cookies.remove(key);
 					}
+					$localStorage.$reset();
+					$sessionStorage.$reset();
 				 	$state.go('appSimple.login');
 				}
 			})
