@@ -24,7 +24,9 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 		appointmentDetails: appointmentDetails,
 		appointmentGateEntry : appointmentGateEntry,
 		appointmentDelete: appointmentDelete,
-		appointmentBlock: appointmentBlock
+		appointmentBlock: appointmentBlock,
+		appointmentBuildingEntry: appointmentBuildingEntry,
+		appointmentCompanyEntry: appointmentCompanyEntry
 	};
 
 	return appointmentServices;
@@ -86,6 +88,17 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 
 	function appointmentBlock(requestData) {
 		return $http.post('https://cppjs.com/api/appointment/block', requestData).then(function(response){
+			if(response.data.error){
+				return "Error";
+			}
+			else {
+				return response.data;
+			}
+		});
+	}
+
+	function appointmentBuildingEntry(requestData) {
+		return $http.post('https://cppjs.com/api/appointment/update/entrytime/building', requestData).then(function(response){
 			if(response.data.error){
 				return "Error";
 			}

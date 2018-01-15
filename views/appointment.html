@@ -85,7 +85,7 @@
                                 <button class="btn btn-secondary" type="button" ng-click="todayAppointmentMarkExit(selectionAppointment)" ng-if="!disableMarkExit">
                                     Mark exit
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="exportTodaysSelectedData(selectionAppointment)" >
+                                <button class="btn btn-secondary" type="button" ng-csv="exportTodaysSelectedData(selectionAppointment)" filename="appointments.csv">
                                     Export
                                 </button>
                                 <button class="btn btn-secondary" type="button" ng-click="todayAppointmentDelete(selectionAppointment)">
