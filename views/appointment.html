@@ -128,8 +128,36 @@
                                     <img ng-src="https://cppjs.com/api/visitor/visitorid/{{tAppointment.visitorid}}/photo/user/{{userid}}/uuid/{{uuid}}" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
                                 </div>
                               </th>
-                              <td ng-if="tAppointment.isblocked < 1">{{tAppointment.status}}</td>
-                              <td ng-if="tAppointment.isblocked > 0">Blocked</td>
+                              <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.gateentrytime && !tAppointment.gateexittime">
+                                  Entered
+                                </span>
+                                <span ng-if="tAppointment.isblocked < 1 && !tAppointment.gateentrytime">
+                                  Expected
+                                </span>
+                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.gateexittime"> Exited </span>
+                                <span ng-if="tAppointment.isblocked > 0">Blocked</span>
+                              </td>
+                              <td ng-if="userrole==='role_company_building_gate'">
+                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.buildingentrytime && !tAppointment.buildingexittime">
+                                  Entered
+                                </span>
+                                <span ng-if="tAppointment.isblocked < 1 && !tAppointment.buildingentrytime">
+                                  Expected
+                                </span>
+                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.buildingexittime"> Exited </span>
+                                <span ng-if="tAppointment.isblocked > 0">Blocked</span>
+                              </td>
+                              <td ng-if="userrole==='role_company_reception'">
+                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.companyentrytime && !tAppointment.companyexittime">
+                                  Entered
+                                </span>
+                                <span ng-if="tAppointment.isblocked < 1 && !tAppointment.companyentrytime">
+                                  Expected
+                                </span>
+                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.companyexittime"> Exited </span>
+                                <span ng-if="tAppointment.isblocked > 0">Blocked</span>
+                              </td>
                               <td>{{tAppointment.visitorpassno}}</td>
                               <td>{{tAppointment.visitorname}}<br>
                                 {{ !tAppointment.visitormobile && '--' || tAppointment.visitormobile }}

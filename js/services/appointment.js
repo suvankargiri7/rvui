@@ -26,7 +26,10 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 		appointmentDelete: appointmentDelete,
 		appointmentBlock: appointmentBlock,
 		appointmentBuildingEntry: appointmentBuildingEntry,
-		appointmentCompanyEntry: appointmentCompanyEntry
+		appointmentCompanyEntry: appointmentCompanyEntry,
+		appointmentGateExit: appointmentGateExit,
+		appointmentBuildingExit: appointmentBuildingExit,
+		appointmentCompanyExit: appointmentCompanyExit
 	};
 
 	return appointmentServices;
@@ -43,6 +46,7 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 	}
 
 	function appointmentTodayListRequest(requestData) {
+		console.log(requestData);
 		return $http.get('https://cppjs.com/api/appointment/today/excludemobileapps/'+requestData.excludemobileapps+'/company/'+ requestData.companyid + '/user/'+ requestData.userid + "/uuid/" + requestData.uuid).then(function(response){
 			if(response.data.error){
 				return "Error";
@@ -107,5 +111,50 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 			}
 		});
 	}
+
+	function appointmentCompanyEntry(requestData) {
+		return $http.post('https://cppjs.com/api/appointment/update/entrytime/reception', requestData).then(function(response){
+			if(response.data.error){
+				return "Error";
+			}
+			else {
+				return response.data;
+			}
+		});
+	}
+
+	function appointmentGateExit(requestData) {
+		return $http.post('https://cppjs.com/api/appointment/update/exittime/gate', requestData).then(function(response){
+			if(response.data.error){
+				return "Error";
+			}
+			else {
+				return response.data;
+			}
+		});
+	}
+
+	function appointmentBuildingExit(requestData) {
+		return $http.post('https://cppjs.com/api/appointment/update/exittime/building', requestData).then(function(response){
+			if(response.data.error){
+				return "Error";
+			}
+			else {
+				return response.data;
+			}
+		});
+	}
+
+	function appointmentCompanyExit(requestData) {
+		return $http.post('https://cppjs.com/api/appointment/update/exittime/reception', requestData).then(function(response){
+			if(response.data.error){
+				return "Error";
+			}
+			else {
+				return response.data;
+			}
+		});
+	}
+	
 
 }

@@ -240,7 +240,7 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 		      			'uuid' : uuid
 		      		};
 		      		var appointmentMarkentryRequest =  $appointmentServices.appointmentBuildingEntry(markEntryRequestData);
-		      		appointmentDeleteRequest.then(function(deleteReponse){
+		      		appointmentMarkentryRequest.then(function(deleteReponse){
 		      			$state.go($state.current, {}, {reload: true});
 		      		});
 		      	}
@@ -259,7 +259,7 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 		      			'uuid' : uuid
 		      		};
 		      		var appointmentMarkentryRequest =  $appointmentServices.appointmentBuildingEntry(markEntryRequestData);
-		      		appointmentDeleteRequest.then(function(deleteReponse){
+		      		appointmentMarkentryRequest.then(function(deleteReponse){
 		      			$state.go($state.current, {}, {reload: true});
 		      		});
 		      	}
@@ -278,7 +278,7 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 		      			'uuid' : uuid
 		      		};
 		      		var appointmentMarkentryRequest =  $appointmentServices.appointmentGateEntry(markEntryRequestData);
-		      		appointmentDeleteRequest.then(function(deleteReponse){
+		      		appointmentMarkentryRequest.then(function(deleteReponse){
 		      			$state.go($state.current, {}, {reload: true});
 		      		});
 		      	}
@@ -289,16 +289,63 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 
 	$scope.todayAppointmentMarkExit  =  function(selectedAppointments) {
 
-		console.log('todayAppointmentExit--->>', selectedAppointments);
 		if($sessionStorage.userDetails.userrole==='role_company_building_gate')
 		{
-			alert('user build exit');
+			angular.forEach(selectedAppointments, function(value){
+		      	angular.forEach($localStorage.todayAppointments, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var markExitRequestData = {
+		      			'tocompany' : eachAppointment.tocompany,
+		      			'id' : eachAppointment.id,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentMarkexitRequest =  $appointmentServices.appointmentBuildingExit(markExitRequestData);
+		      		appointmentMarkexitRequest.then(function(deleteReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
 		}
-		if($sessionStorage.userDetails.userrole==='role_company_reception'){
-			alert('user company exit');
+		if($sessionStorage.userDetails.userrole==='role_company_reception') {
+			angular.forEach(selectedAppointments, function(value){
+		      	angular.forEach($localStorage.todayAppointments, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var markExitRequestData = {
+		      			'tocompany' : eachAppointment.tocompany,
+		      			'id' : eachAppointment.id,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentMarkexitRequest =  $appointmentServices.appointmentCompanyExit(markExitRequestData);
+		      		appointmentMarkexitRequest.then(function(deleteReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
 		}
 		else {
-			alert('user gate exit');
+			angular.forEach(selectedAppointments, function(value){
+		      	angular.forEach($localStorage.todayAppointments, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var markExitRequestData = {
+		      			'tocompany' : eachAppointment.tocompany,
+		      			'id' : eachAppointment.id,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentMarkexitRequest =  $appointmentServices.appointmentGateExit(markExitRequestData);
+		      		appointmentMarkexitRequest.then(function(deleteReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
 		}
 	}
 
