@@ -54,5 +54,26 @@ function appointmentDetailController($stateParams, $scope, uuid, $http, $state, 
     	$scope.appointmentDetails = appointmentDetailResponse;
     });
 
+    $scope.unblock = function (appointment) {
+      var parentid = '';
+      if(appointment.parentid){
+        parentid = appointment.parentid;
+      }
+      var appointmentRequestData = {
+          'userid' : userId,
+          'uuid' : uuid,
+          'id' : appointment.id,
+          'parentid' : parentid,
+          'tocompany' : appointment.tocompany,
+          'visitdate' : appointment.visitdate,
+          'year' : appointment.year
+      }
+
+      var appointmentUnblockRequest = $appointmentServices.appointmentUnblock(appointmentRequestData);
+      appointmentUnblockRequest.then(function(unblockResponse){
+        $state.go('app.main');
+      });
+    }
+
 }
 

@@ -29,7 +29,9 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 		appointmentCompanyEntry: appointmentCompanyEntry,
 		appointmentGateExit: appointmentGateExit,
 		appointmentBuildingExit: appointmentBuildingExit,
-		appointmentCompanyExit: appointmentCompanyExit
+		appointmentCompanyExit: appointmentCompanyExit,
+		appointmentUnblock : appointmentUnblock,
+		appointmentHistoryRequest: appointmentHistoryRequest
 	};
 
 	return appointmentServices;
@@ -155,6 +157,26 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 			}
 		});
 	}
-	
 
+	function appointmentUnblock(requestData) {
+		return $http.post('https://cppjs.com/api/appointment/unblock', requestData).then(function(response){
+			if(response.data.error){
+				return "Error";
+			}
+			else {
+				return response.data;
+			}
+		});
+	}
+
+	function appointmentHistoryRequest(requestData){
+		return $http.get('https://cppjs.com/api/appointment/from/'+requestData.fromDate+'/to/'+requestData.toDate+'/company/'+requestData.companyId+'/user/'+requestData.userId+'/uuid/'+requestData.uuid+'/limit/500/offset/0').then(function(response){
+			if(response.data.error){
+				return "Error";
+			}
+			else {
+				return response.data;
+			}
+		});
+	}
 }

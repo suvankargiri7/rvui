@@ -50,8 +50,8 @@
                                     <div class="callout callout-info">
                                         <small class="text-muted">From date</small>
                                         <br>
-                                         <datepicker>
-                                          <input ng-model="date" type="text" class="form-control"/>
+                                         <datepicker date-format="yyyy-MM-dd">
+                                          <input ng-model="fromdate" type="text" class="form-control" ng-change="getHistoryFromMailRecord(todate,fromdate)"/>
                                         </datepicker>
                                     </div>
                                 </div>
@@ -60,8 +60,8 @@
                                     <div class="callout callout-danger">
                                         <small class="text-muted">To date</small>
                                         <br>
-                                        <datepicker>
-                                          <input ng-model="date" type="text" class="form-control"/>
+                                        <datepicker date-format="yyyy-MM-dd">
+                                          <input ng-model="todate" type="text" class="form-control" ng-change="getHistoryToMailRecord(todate,fromdate)"/>
                                         </datepicker>
                                     </div>
                                 </div>
@@ -88,10 +88,10 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-10">
-                                    <button class="btn btn-secondary" type="button" ng-if="selection.length > 1">
+                                    <button class="btn btn-secondary" type="button" ng-if="selection.length > 0" ng-csv="exportSelectedData(selection)" filename="mailrecord.csv">
                                         Export
                                     </button>
-                                    <button class="btn btn-secondary" type="button">
+                                    <button class="btn btn-secondary" type="button" ng-click="deleleSelectionData(selection)">
                                         Delete
                                     </button>
                                 </div>

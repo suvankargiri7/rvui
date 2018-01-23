@@ -59,9 +59,9 @@
                     <div class="row" ng-hide="!appointmentToday">
                       <div class="col-sm-12">
                         <div class="row">
-                            <div class="col-sm-2">
+                            <div class="col-sm-2"  ng-if="todaysAppointment.length > 0">
                                 <div class="dropdown">
-                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span ng-if="selectionAppointment.length < 1">None</span>
                                     <span ng-if="selectionAppointment.length > 0 && selectionAppointment.length < todaysAppointment.length">Selected</span>
                                     <span ng-if="selectionAppointment.length == todaysAppointment.length">All</span>
@@ -73,25 +73,25 @@
                                 </div>
                             </div>
                             <div class="col-sm-10" ng-hide="selectionAppointment.length < 1">
-                                <button class="btn btn-secondary" type="button" ng-click="todayAppointmentView(selectionAppointment)" ng-hide="selectionAppointment.length > 1">
+                                <button class="btn btn-secondary rv-view" type="button" ng-click="todayAppointmentView(selectionAppointment)" ng-hide="selectionAppointment.length > 1">
                                     View
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="todayAppointmentEdit()" ng-hide="selectionAppointment.length > 1 ">
+                                <button class="btn btn-secondary rv-edit" type="button" ng-click="todayAppointmentEdit()" ng-hide="selectionAppointment.length > 1 ">
                                     Edit
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="todayAppointmentMarkEntry(selectionAppointment)" ng-if="!disableMarkEntry">
+                                <button class="btn btn-secondary rv-mark-entry" type="button" ng-click="todayAppointmentMarkEntry(selectionAppointment)" ng-if="!disableMarkEntry">
                                     Mark entry
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="todayAppointmentMarkExit(selectionAppointment)" ng-if="!disableMarkExit">
+                                <button class="btn btn-secondary rv-mark-exit" type="button" ng-click="todayAppointmentMarkExit(selectionAppointment)" ng-if="!disableMarkExit">
                                     Mark exit
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-csv="exportTodaysSelectedData(selectionAppointment)" filename="appointments.csv">
+                                <button class="btn btn-secondary rv-export" type="button" ng-csv="exportTodaysSelectedData(selectionAppointment)" filename="appointments.csv" ng-hide="selectionAppointment.length < 1">
                                     Export
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="todayAppointmentDelete(selectionAppointment)">
+                                <button class="btn btn-secondary rv-delete" type="button" ng-click="todayAppointmentDelete(selectionAppointment)">
                                     Delete
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="todayAppointmentBlock(selectionAppointment)" ng-if="!disableBlock">
+                                <button class="btn btn-secondary rv-block" type="button" ng-click="todayAppointmentBlock(selectionAppointment)" ng-if="!disableBlock">
                                     Block
                                 </button>
                             </div>
@@ -100,7 +100,7 @@
                     <!--/.row-->
                     <div class="padding-top-16">
                         <!-- Today -->
-                        <table class="table">
+                        <table class="table" id="todayAppointmentTable">
                           <thead>
                             <tr>
                               <th scope="col">#</th>
@@ -116,7 +116,7 @@
                             </tr>
                           </thead>
                           <tbody ng-hide="todaysAppointment.length == 0">
-                            <tr ng-repeat="tAppointment in todaysAppointment | filter: appointmentSearch">
+                            <tr ng-repeat="tAppointment in todaysAppointment | filter: appointmentSearch" ng-click="todayCheckboxchecked()">
                               <td><input type="checkbox"
                                           name="selectedAppointments[]"
                                           value="{{tAppointment.id}}"
@@ -125,7 +125,7 @@
                                           ng-click="toggleSelection(tAppointment)"></td>
                               <th scope="row">
                                 <div class="avatar">
-                                    <img ng-src="https://cppjs.com/api/visitor/visitorid/{{tAppointment.visitorid}}/photo/user/{{userid}}/uuid/{{uuid}}" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                                    <img ng-src="https://cppjs.com/api/visitor/visitorid/{{tAppointment.visitorid}}/photo/user/{{userid}}/uuid/{{uuid}}" class="img-avatar" alt="visitor image" src="img/avatars/1.jpg">
                                 </div>
                               </th>
                               <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
@@ -167,8 +167,31 @@
                               </td>
                               <td>{{tAppointment.fromcompany}}</td>
                               <td>{{tAppointment.purpose}}</td>
-                              <td>{{ !tAppointment.gateentrytime && '--' || tAppointment.gateentrytime }}</td>
-                              <td>{{ !tAppointment.gateexittime && '--' || tAppointment.gateexittime }}</td>
+
+                              <!-- Role Receptions-->
+                              <td ng-if="userrole==='role_company_reception'">
+                                {{ !tAppointment.companyentrytime && '--' || tAppointment.companyentrytime }}
+                              </td>
+                              <td ng-if="userrole==='role_company_reception'">
+                                {{ !tAppointment.companyexittime && '--' || tAppointment.companyexittime }}
+                              </td>
+
+                              <!-- Role Building Gate -->
+                              <td ng-if="userrole==='role_company_building_gate'">
+                                {{ !tAppointment.buildingentrytime && '--' || tAppointment.buildingentrytime }}
+                              </td>
+                              <td ng-if="userrole==='role_company_building_gate'">
+                                {{ !tAppointment.buildingexittime && '--' || tAppointment.buildingexittime }}
+                              </td>
+
+                              <!-- Role Gate and Admin -->
+                              <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                {{ !tAppointment.gateentrytime && '--' || tAppointment.gateentrytime }}
+                              </td>
+                              <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                {{ !tAppointment.gateexittime && '--' || tAppointment.gateexittime }}
+                              </td>
+
                             </tr>
                           </tbody>
                           <tbody ng-show="todaysAppointment.length == 0">
@@ -188,7 +211,7 @@
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="dropdown">
-                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     None
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -198,22 +221,22 @@
                                 </div>
                             </div>
                             <div class="col-sm-10">
-                               <button class="btn btn-secondary" type="button" ng-click="overstayView()" ng-hide="">
+                               <button class="btn btn-secondary rv-view" type="button" ng-click="overstayView()" ng-hide="">
                                     View
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="overstayEdit()" ng-hide="">
+                                <button class="btn btn-secondary rv-edit" type="button" ng-click="overstayEdit()" ng-hide="">
                                     Edit
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="overstayMarkExit()" ng-hide="">
+                                <button class="btn btn-secondary rv-mark-exit" type="button" ng-click="overstayMarkExit()" ng-hide="">
                                     Mark exit
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="overstayExport()">
+                                <button class="btn btn-secondary rv-export" type="button" ng-click="overstayExport()">
                                     Export
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="overstayDelete()">
+                                <button class="btn btn-secondary rv-delete" type="button" ng-click="overstayDelete()">
                                     Delete
                                 </button>
-                                <button class="btn btn-secondary" type="button" ng-click="overstayBlock()">
+                                <button class="btn btn-secondary rv-block" type="button" ng-click="overstayBlock()">
                                     Block
                                 </button>
                             </div>
@@ -262,7 +285,7 @@
             <div class="row" ng-hide="!appointmentVip">
                       <div class="col-sm-12">
                         <div class="row">
-                            <div class="col-sm-2">
+                            <div class="col-sm-2" ng-if="vipappointment.length > 0">
                                 <div class="dropdown">
                                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span ng-if="selectionVip.length < 1">None</span>
@@ -342,8 +365,30 @@
                               </td>
                               <td>{{vAppointment.fromcompany}}</td>
                               <td>{{vAppointment.purpose}}</td>
-                              <td>{{ !vAppointment.gateentrytime && '--' || vAppointment.gateentrytime }}</td>
-                              <td>{{ !vAppointment.gateexittime && '--' || vAppointment.gateexittime }}</td>
+
+                              <!-- Role Receptions-->
+                              <td ng-if="userrole==='role_company_reception'">
+                                {{ !vAppointment.companyentrytime && '--' || vAppointment.companyentrytime }}
+                              </td>
+                              <td ng-if="userrole==='role_company_reception'">
+                                {{ !vAppointment.companyexittime && '--' || vAppointment.companyexittime }}
+                              </td>
+
+                              <!-- Role Building Gate -->
+                              <td ng-if="userrole==='role_company_building_gate'">
+                                {{ !vAppointment.buildingentrytime && '--' || vAppointment.buildingentrytime }}
+                              </td>
+                              <td ng-if="userrole==='role_company_building_gate'">
+                                {{ !vAppointment.buildingexittime && '--' || vAppointment.buildingexittime }}
+                              </td>
+
+                              <!-- Role Gate and Admin -->
+                              <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                {{ !vAppointment.gateentrytime && '--' || vAppointment.gateentrytime }}
+                              </td>
+                              <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                {{ !vAppointment.gateexittime && '--' || vAppointment.gateexittime }}
+                              </td>
                             </tr>
                           </tbody>
                           <tbody ng-show="vipappointment.length == 0">

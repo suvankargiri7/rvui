@@ -56,6 +56,22 @@ function mailrecordController($scope, uuid, $http, $state, $window, $cookies, $l
 	$scope.todayMailRecord = function() {
 		$scope.mailRecord = true;
     	$scope.allMailreord = false;
+    	$scope.selection = [];
+    	var mailRecordTodayRequest = $mailrecordServices.mailrecordTodayRequest(mailRequestTodayData);
+
+		mailRecordTodayRequest.then(function(todayMailResponse){
+			console.log('MailReord today---->', todayMailResponse);
+			if(todayMailResponse.length > 0) {
+				$scope.todayMailAvailable = true;
+				$scope.todayMails = todayMailResponse;
+				$localStorage.todaymail = todayMailResponse;
+				$scope.totalTodaymail = todayMailResponse.length;
+			}
+			else {
+				$scope.todayMailAvailable = false;
+				$scope.totalTodaymail = todayMailResponse.length;
+			}
+		});
 	};
 
 	$scope.allMailrecord = function() {
@@ -89,7 +105,155 @@ function mailrecordController($scope, uuid, $http, $state, $window, $cookies, $l
              todayMail.selected = true;
              $scope.toggleSelection(todayMail);
         });
+	};
+
+	$scope.getHistoryFromMailRecord = function(toDateString,fromDateString) {
+		console.log(fromDateString);
+		console.log(toDateString);
+		if(!toDateString) {
+			var today = new Date();
+			var todayDate = today.getDate();
+			var todayMonth = (today.getMonth()+1);
+			var todayYear = today.getFullYear();
+			var toDate = todayYear+'-'+todayMonth+'-'+todayDate;
+			var historyRequestData = {
+				'fromDate' : fromDateString,
+				'toDate': toDate,
+				'companyId': companyId,
+				'userId': userId,
+				'uuid': uuid
+			};
+
+			var mailRecordHistoryRequest = $mailrecordServices.mailrecordHistoryRequest(historyRequestData);
+			mailRecordHistoryRequest.then(function(responseHistory) {
+				console.log(responseHistory);
+				if(responseHistory.length==0){
+					$scope.todayMailAvailable = false;
+				}
+				$scope.todayMails = responseHistory;
+			});
+		}
+		else{
+			var historyRequestData = {
+				'fromDate' : fromDateString,
+				'toDate': toDateString,
+				'companyId': companyId,
+				'userId': userId,
+				'uuid': uuid
+			};
+
+			var mailRecordHistoryRequest = $mailrecordServices.mailrecordHistoryRequest(historyRequestData);
+			mailRecordHistoryRequest.then(function(responseHistory) {
+				console.log(responseHistory);
+				if(responseHistory.length==0){
+					$scope.todayMailAvailable = false;
+				}
+				$scope.todayMails = responseHistory;
+			});
+		}
 	}
+
+	$scope.getHistoryToMailRecord = function(toDateString,fromDateString) {
+		console.log(toDateString);
+		console.log(fromDateString);
+		if(!fromDateString) {
+			var today = new Date();
+			var todayDate = today.getDate();
+			var todayMonth = (today.getMonth()+1);
+			var todayYear = today.getFullYear();
+			var toDate = todayYear+'-'+todayMonth+'-'+todayDate;
+			var historyRequestData = {
+				'fromDate' : toDate,
+				'toDate': toDateString,
+				'companyId': companyId,
+				'userId': userId,
+				'uuid': uuid
+			};
+
+			var mailRecordHistoryRequest = $mailrecordServices.mailrecordHistoryRequest(historyRequestData);
+			mailRecordHistoryRequest.then(function(responseHistory) {
+				console.log(responseHistory);
+				if(responseHistory.length==0){
+					$scope.todayMailAvailable = false;
+				}
+				$scope.todayMails = responseHistory;
+			});
+		}
+		else {
+
+			var historyRequestData = {
+				'fromDate' : fromDateString,
+				'toDate': toDateString,
+				'companyId': companyId,
+				'userId': userId,
+				'uuid': uuid
+			};
+
+			console.log(historyRequestData);
+			var mailRecordHistoryRequest = $mailrecordServices.mailrecordHistoryRequest(historyRequestData);
+			mailRecordHistoryRequest.then(function(responseHistory) {
+				console.log(responseHistory);
+				if(responseHistory.length==0){
+					$scope.todayMailAvailable = false;
+				}
+				$scope.todayMails = responseHistory;
+			});
+		}
+	}
+
+	$scope.exportSelectedData = function(selectedData) {
+		var exportedData = [];
+		angular.forEach(selectedData, function(value){
+		      	angular.forEach($scope.todayMails, function(eachMail){
+		      	if(eachMail.id === value){
+		      		console.log(eachMail);
+		      		var tempArray = [];
+		      		tempArray.push(eachMail.name);
+		      		tempArray.push(eachMail.mobile);
+		      		tempArray.push(eachMail.email);
+		      		tempArray.push($sessionStorage.companyDetails[0].companyname);
+					tempArray.push(eachMail.trackingid);
+					tempArray.push(eachMail.remarks);
+					if(eachMail.iscollected > 0) {
+						tempArray.push('Collected');
+					}
+					if(eachMail.iscollected == 0) {
+						tempArray.push('Not Collected');
+					}
+					tempArray.push(eachMail.instructions);
+					exportedData.push(tempArray);
+				}
+		      		
+		    });
+		 });
+		return exportedData;
+	}
+
+	$scope.deleleSelectionData = function(selectedData) {
+		if(selectedData.length < 100) {
+			angular.forEach(selectedData, function(value){
+		      	angular.forEach($scope.todayMails, function(eachMail){
+		      	if(eachMail.id === value){
+		      		var deleteRequestData = {
+		      			'mailrecordid' : value,
+		      			'companyid' : companyId,
+		      			'year' : eachMail.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var mailDeleteRequest =  $mailrecordServices.mailrecordDeleteRequest(deleteRequestData);
+		      		mailDeleteRequest.then(function(deleteReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
+		}
+		else{
+			alert('We can delete maximum of 100 mail at once');
+		}
+	}
+
 
 
 }

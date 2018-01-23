@@ -414,7 +414,7 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	}
 
 	$scope.todayAppointmentEdit = function() {
-		alert('Edit Today Appointment');
+		console.log('Feature Not available');
 	}
 
 
@@ -506,7 +506,21 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	}
 
 
+	$scope.todayCheckboxchecked = function(){
+		$('#todayAppointmentTable tbody tr').click(function(event) {
+        if (event.target.type !== 'checkbox') {
+            $(':checkbox', this).trigger('click');
+            if($(':checkbox', this). prop("checked") == false){
+            	$(this).removeClass('rv-selected-row');
+            }
+            else{
+            	 $(this).addClass('rv-selected-row');
+            }
+              
+        }
 
+    	});
+	}
 
 }
 

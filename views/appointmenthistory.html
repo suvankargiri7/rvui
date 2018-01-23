@@ -12,7 +12,7 @@
                                         <small class="text-muted">Name/Host/Company/Pass No/vehicle No</small>
                                         <br>
                                         <div class="input-group">
-                                          <input type="text" id="input2-group2" name="input2-group2" class="form-control" placeholder="Type">
+                                          <input type="text" id="input2-group2" name="input2-group2" class="form-control" placeholder="Type" ng-model="appointmentSearch">
                                       </div>
                                     </div>
                                 </div>
@@ -26,8 +26,8 @@
                                     <div class="callout callout-info">
                                         <small class="text-muted">From date</small>
                                         <br>
-                                         <datepicker>
-                                          <input ng-model="date" type="text" class="form-control"/>
+                                         <datepicker date-format="yyyy-MM-dd">
+                                          <input ng-model="fromdate" type="text" class="form-control" ng-change="getHistoryFrom(todate,fromdate)"/>
                                         </datepicker>
                                     </div>
                                 </div>
@@ -36,8 +36,8 @@
                                     <div class="callout callout-danger">
                                         <small class="text-muted">To date</small>
                                         <br>
-                                        <datepicker>
-                                          <input ng-model="date" type="text" class="form-control"/>
+                                        <datepicker date-format="yyyy-MM-dd">
+                                          <input ng-model="todate" type="text" class="form-control" ng-change="getHistoryTo(todate,fromdate)"/>
                                         </datepicker>
                                     </div>
                                 </div>
@@ -50,22 +50,27 @@
                     <div class="row">
                       <div class="col-sm-12">
                            <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-sm-2" ng-if="allAppointment.length > 0">
                                     <div class="dropdown">
-                                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        None
+                                      <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span ng-if="selectionAppointment.length < 1">None</span>
+                                        <span ng-if="selectionAppointment.length > 0 && selectionAppointment.length < allAppointment.length">Selected</span>
+                                        <span ng-if="selectionAppointment.length == allAppointment.length">All</span>
                                       </button>
                                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">None</a>
-                                        <a class="dropdown-item" href="#">All</a>
+                                        <a class="dropdown-item" href="#" ng-click="unselectAllAppointment()">None</a>
+                                        <a class="dropdown-item" href="#" ng-click="selectAllAppointment()">All</a>
                                       </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-10">
-                                    <button class="btn btn-secondary" type="button">
+                                  <button class="btn btn-secondary rv-view" type="button" ng-click="appointmentView(selectionAppointment)" ng-if="selectionAppointment.length == 1">
+                                    View
+                                </button>
+                                    <button class="btn btn-secondary rv-export" type="button" ng-hide="selectionAppointment.length < 1" ng-csv="exportSelectedData(selectionAppointment)" filename="appointmentHistory.csv" >
                                         Export
                                     </button>
-                                    <button class="btn btn-secondary" type="button">
+                                    <button class="btn btn-secondary rv-delete" type="button" ng-hide="selectionAppointment.length < 1" ng-click="appointmentDelete(selectionAppointment)">
                                         Delete
                                     </button>
                                 </div>
@@ -73,7 +78,7 @@
                         
                         <div class="padding-top-16">
                         <!--/.row-->
-                        <table class="table">
+                        <table class="table" id="appointmentHistory">
                               <thead>
                                 <tr>
                                   <th scope="col">#</th>
@@ -88,23 +93,88 @@
                                   <th scope="col">Exit Time</th>
                                 </tr>
                               </thead>
-                              <tbody ng-if="todayMailAvailable">
-                                <tr ng-repeat = "todayMail in todayMails">
-                                  <td><input type="checkbox"></td>
-                                  <td>{{todayMail.id}}</td>
-                                  <td>
-                                    <span class="label btn-success" ng-if="todayMail.iscollected==1">Collected</span>
-                                    <span class="label btn-danger" ng-if="todayMail.iscollected==0">Pending</span>
+                              <tbody ng-hide="allAppointment.length == 0">
+                                <tr ng-repeat="appointment in allAppointment | filter: appointmentSearch" ng-click="appointmentCheckboxchecked()">
+                                  <td><input type="checkbox"
+                                              name="selectedAppointments[]"
+                                              value="{{appointment.id}}"
+                                              ng-model="appointment.selected"
+                                              ng-checked="selectionAppointment.indexOf(appointment.id) > -1"
+                                              ng-click="toggleSelection(appointment)"></td>
+                                  <th scope="row">
+                                    <div class="avatar">
+                                        <img ng-src="https://cppjs.com/api/visitor/visitorid/{{appointment.visitorid}}/photo/user/{{userid}}/uuid/{{uuid}}" class="img-avatar" alt="visitor image" src="img/avatars/1.jpg">
+                                    </div>
+                                  </th>
+                                  <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                    <span ng-if="appointment.isblocked < 1 && appointment.gateentrytime && !appointment.gateexittime">
+                                      Entered
+                                    </span>
+                                    <span ng-if="appointment.isblocked < 1 && !appointment.gateentrytime">
+                                      Expected
+                                    </span>
+                                    <span ng-if="appointment.isblocked < 1 && appointment.gateexittime"> Exited </span>
+                                    <span ng-if="appointment.isblocked > 0">Blocked</span>
                                   </td>
-                                  <td>{{todayMail.name}}</td>
-                                  <td>{{todayMail.mobile}}</td>
-                                  <td>{{todayMail.trackingid}}</td>
-                                  <td>{{todayMail.deliverycompany}}</td>
+                                  <td ng-if="userrole==='role_company_building_gate'">
+                                    <span ng-if="appointment.isblocked < 1 && appointment.buildingentrytime && !appointment.buildingexittime">
+                                      Entered
+                                    </span>
+                                    <span ng-if="appointment.isblocked < 1 && !appointment.buildingentrytime">
+                                      Expected
+                                    </span>
+                                    <span ng-if="appointment.isblocked < 1 && appointment.buildingexittime"> Exited </span>
+                                    <span ng-if="appointment.isblocked > 0">Blocked</span>
+                                  </td>
+                                  <td ng-if="userrole==='role_company_reception'">
+                                    <span ng-if="appointment.isblocked < 1 && appointment.companyentrytime && !appointment.companyexittime">
+                                      Entered
+                                    </span>
+                                    <span ng-if="appointment.isblocked < 1 && !appointment.companyentrytime">
+                                      Expected
+                                    </span>
+                                    <span ng-if="appointment.isblocked < 1 && appointment.companyexittime"> Exited </span>
+                                    <span ng-if="appointment.isblocked > 0">Blocked</span>
+                                  </td>
+                                  <td>{{appointment.visitorpassno}}</td>
+                                  <td>{{appointment.visitorname}}<br>
+                                    {{ !appointment.visitormobile && '--' || appointment.visitormobile }}
+                                  </td>
+                                  <td>{{appointment.visiteename}}<br>
+                                    {{ !appointment.visiteemobile && '--' || appointment.visiteemobile }}
+                                  </td>
+                                  <td>{{appointment.fromcompany}}</td>
+                                  <td>{{appointment.purpose}}</td>
+
+                                  <!-- Role Receptions-->
+                                  <td ng-if="userrole==='role_company_reception'">
+                                    {{ !appointment.companyentrytime && '--' || appointment.companyentrytime }}
+                                  </td>
+                                  <td ng-if="userrole==='role_company_reception'">
+                                    {{ !appointment.companyexittime && '--' || appointment.companyexittime }}
+                                  </td>
+
+                                  <!-- Role Building Gate -->
+                                  <td ng-if="userrole==='role_company_building_gate'">
+                                    {{ !appointment.buildingentrytime && '--' || appointment.buildingentrytime }}
+                                  </td>
+                                  <td ng-if="userrole==='role_company_building_gate'">
+                                    {{ !appointment.buildingexittime && '--' || appointment.buildingexittime }}
+                                  </td>
+
+                                  <!-- Role Gate and Admin -->
+                                  <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                    {{ !appointment.gateentrytime && '--' || appointment.gateentrytime }}
+                                  </td>
+                                  <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                    {{ !appointment.gateexittime && '--' || appointment.gateexittime }}
+                                  </td>
+
                                 </tr>
                               </tbody>
-                              <tbody ng-if="!todayMailAvailable">
+                              <tbody ng-show="allAppointment.length == 0">
                                 <tr>
-                                  <td colspan="7">No Data Available</td>
+                                    <td colspan="8"> No Data Found </td>
                                 </tr>
                               </tbody>
                             </table>

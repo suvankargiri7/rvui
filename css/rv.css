@@ -152,4 +152,29 @@
 
 .table th, .table td {
   vertical-align: middle !important;
-}   
+}  
+
+.rv-selected-row {
+  background-color: #BDBDBD;
+}
+.rv-view {
+  background-color: #80CBC4;
+}
+.rv-edit {
+  background-color: #B39DDB;
+}
+.rv-mark-exit {
+  background-color: #DCE775;
+}
+.rv-mark-entry{
+  background-color: #BCAAA4;
+}
+.rv-export{
+  background-color: #AED581;
+}
+.rv-delete {
+  background-color: #FF8A65;
+}
+.rv-block {
+  background-color: #E57373;
+}
