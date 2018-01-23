@@ -178,3 +178,27 @@
 .rv-block {
   background-color: #E57373;
 }
+.margin-left-bottom-5 {
+  margin-left:5px;
+  margin-bottom: 5px;
+}
+.expected {
+  background-color: #80CBC4;
+  padding:3px;
+  font-weight: bold;
+}
+.entered {
+  background-color: #E57373;
+  padding:3px;
+  font-weight: bold;
+}
+.exited {
+  background-color: #AED581;
+  padding:3px;
+  font-weight: bold;
+}
+.blocked {
+  background-color: #FF8A65;
+  padding:3px;
+  font-weight: bold;
+}
