@@ -397,8 +397,8 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 			      		};
 			      		var appointmentBlockRequest =  $appointmentServices.appointmentBlock(blockRequestData);
 			      		appointmentBlockRequest.then(function(blockReponse){
-			      			//$state.go($state.current, {}, {reload: true});
-			      			console.log(blockReponse);
+			      			$state.go($state.current, {}, {reload: true});
+			      			
 			      		});
 					}
 				});
@@ -433,7 +433,23 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	    else {
 	      $scope.selectionVip.push(fruitName.id);
 	    }
+	    checkAnyVipblockItem($scope.selectionVip);
     };
+
+    function checkAnyVipblockItem(selectionAppointment) {
+    	var selectedCheckItems = [];
+    	angular.forEach(selectionAppointment, function(value){
+		      	angular.forEach($scope.vipappointment, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		selectedCheckItems.push(eachAppointment);
+		      	}
+		      });
+		   });
+    	var disableBlock = selectedCheckItems.some(item => item.isblocked === 1);
+    	$scope.disableVipBlock = disableBlock;
+    	$scope.disableVipMarkEntry = disableBlock;
+    	$scope.disableVipMarkExit = disableBlock;
+    }
 
     $scope.unselectAllAppointmentVip = function() {
     	$scope.selectionVip = [];
@@ -457,24 +473,302 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 		alert('Vip Appointment Edit');
 	}
 
-	$scope.vipAppointmentMarkEntry = function() {
-		alert('Vip Appointment Mark Entry');
+	$scope.vipAppointmentMarkEntry = function(selectedVip) {
+		if($sessionStorage.userDetails.userrole==='role_company_building_gate')
+		{
+			angular.forEach(selectedVip, function(value){
+		      	angular.forEach($scope.vipappointment, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var markEntryRequestData = {
+		      			'tocompany' : eachAppointment.tocompany,
+		      			'id' : eachAppointment.id,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentMarkentryRequest =  $appointmentServices.appointmentBuildingEntry(markEntryRequestData);
+		      		appointmentMarkentryRequest.then(function(markReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
+		}
+		if($sessionStorage.userDetails.userrole==='role_company_reception') {
+			angular.forEach(selectedVip, function(value){
+		      	angular.forEach($scope.vipappointment, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var markEntryRequestData = {
+		      			'tocompany' : eachAppointment.tocompany,
+		      			'id' : eachAppointment.id,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentMarkentryRequest =  $appointmentServices.appointmentBuildingEntry(markEntryRequestData);
+		      		appointmentMarkentryRequest.then(function(markReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
+		}
+		else {
+			angular.forEach(selectedVip, function(value){
+		      	angular.forEach($scope.vipappointment, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var markEntryRequestData = {
+		      			'tocompany' : eachAppointment.tocompany,
+		      			'id' : eachAppointment.id,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentMarkentryRequest =  $appointmentServices.appointmentGateEntry(markEntryRequestData);
+		      		appointmentMarkentryRequest.then(function(markReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
+		}
 	}
 
-	$scope.vipAppointmentMarkExit = function() {
-		alert('vip Appointment Mark Exit');
+	$scope.vipAppointmentMarkExit = function(selectedVip) {
+		if($sessionStorage.userDetails.userrole==='role_company_building_gate')
+		{
+			angular.forEach(selectedVip, function(value){
+		      	angular.forEach($scope.vipappointment, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var markExitRequestData = {
+		      			'tocompany' : eachAppointment.tocompany,
+		      			'id' : eachAppointment.id,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentMarkexitRequest =  $appointmentServices.appointmentBuildingExit(markExitRequestData);
+		      		appointmentMarkexitRequest.then(function(deleteReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
+		}
+		if($sessionStorage.userDetails.userrole==='role_company_reception') {
+			angular.forEach(selectedVip, function(value){
+		      	angular.forEach($scope.vipappointment, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var markExitRequestData = {
+		      			'tocompany' : eachAppointment.tocompany,
+		      			'id' : eachAppointment.id,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentMarkexitRequest =  $appointmentServices.appointmentCompanyExit(markExitRequestData);
+		      		appointmentMarkexitRequest.then(function(deleteReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
+		}
+		else {
+			angular.forEach(selectedVip, function(value){
+		      	angular.forEach($scope.vipappointment, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var markExitRequestData = {
+		      			'tocompany' : eachAppointment.tocompany,
+		      			'id' : eachAppointment.id,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentMarkexitRequest =  $appointmentServices.appointmentGateExit(markExitRequestData);
+		      		appointmentMarkexitRequest.then(function(deleteReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
+		}
 	}
 
-	$scope.exportVipSelectedData = function() {
-		alert('Vip Appointment export functionality');
+	$scope.exportVipSelectedData = function(selectedVip) {
+		var exportedData = [];
+		angular.forEach(selectedVip, function(value){
+		      	angular.forEach($scope.vipappointment, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		console.log(eachAppointment);
+		      		var tempArray = [];
+		      		tempArray.push(eachAppointment.visitorname);
+		      		tempArray.push(eachAppointment.visitormobile);
+		      		tempArray.push(eachAppointment.visitoremail);
+		      		tempArray.push(eachAppointment.sex);
+		      		tempArray.push(eachAppointment.visiteemobile);
+					tempArray.push(eachAppointment.visiteeemail);
+					tempArray.push("'"+eachAppointment.visitdate+"'");
+					tempArray.push(eachAppointment.purpose);
+					tempArray.push(eachAppointment.idtype);
+					tempArray.push(eachAppointment.idno);				
+					tempArray.push(eachAppointment.fromcompany);
+					tempArray.push($sessionStorage.companyDetails[0].companyname);
+					if($sessionStorage.userDetails.userrole==='role_company_building_gate') {
+						if(!eachAppointment.buildingentrytime) {
+							tempArray.push('');
+						}
+						else {
+							tempArray.push(eachAppointment.buildingentrytime);
+						}
+						
+					}
+					if($sessionStorage.userDetails.userrole==='role_company_building_gate') {
+						if(!eachAppointment.buildingexittime) {
+							tempArray.push('');
+						}
+						else {
+							tempArray.push(eachAppointment.buildingexittime);
+						}
+						
+					}
+					if($sessionStorage.userDetails.userrole==='role_company_reception') {
+						if(!eachAppointment.companyentrytime) {
+							tempArray.push('');
+						}
+						else {
+							tempArray.push(eachAppointment.companyentrytime);
+						}
+					}
+					if($sessionStorage.userDetails.userrole==='role_company_reception') {
+						if(!eachAppointment.companyexittime) {
+							tempArray.push('');
+						}
+						else {
+							tempArray.push(eachAppointment.companyexittime);
+						}
+					}
+					if($sessionStorage.userDetails.userrole==='role_company_admin' || $sessionStorage.userDetails.userrole==='role_company_gate') {
+						if(!eachAppointment.gateentrytime) {
+							tempArray.push('');
+						}
+						else {
+							tempArray.push(eachAppointment.gateentrytime);
+						}
+					}
+					if($sessionStorage.userDetails.userrole==='role_company_admin' || $sessionStorage.userDetails.userrole==='role_company_gate') {
+						if(!eachAppointment.gateexittime) {
+							tempArray.push('');
+						}
+						else {
+							tempArray.push(eachAppointment.gateexittime);
+						}
+					}
+					
+					if(eachAppointment.isblocked > 0){
+						tempArray.push('Blocked');
+					}
+					if(eachAppointment.isblocked == 0)
+					{
+						if($sessionStorage.userDetails.userrole==='role_company_building_gate') {
+							if(!eachAppointment.buildingentrytime && !eachAppointment.buildingexittime) {
+								tempArray.push('Expected');
+							}
+							else if(eachAppointment.buildingentrytime && !eachAppointment.buildingexittime)
+							{
+								tempArray.push('Entered');
+							}
+							else {
+								tempArray.push('Exited');
+							}
+						
+						}
+						
+						if($sessionStorage.userDetails.userrole==='role_company_reception') {
+							if(!eachAppointment.companyentrytime && !eachAppointment.companyexittime) {
+								tempArray.push('Expected');
+							}
+							else if(eachAppointment.companyentrytime && !eachAppointment.companyexittime) {
+								tempArray.push('Entered');
+							}
+							else {
+								tempArray.push('Exited');
+							}
+						}
+
+						if($sessionStorage.userDetails.userrole==='role_company_admin' || $sessionStorage.userDetails.userrole==='role_company_gate') {
+							if(!eachAppointment.gateentrytime && !eachAppointment.gateexittime) {
+								tempArray.push('Expected');
+							}
+							else if(eachAppointment.gateentrytime && !eachAppointment.gateexittime) {
+								tempArray.push('Entered');
+							}
+							else {
+								tempArray.push('Exited');
+							}
+						}
+					}
+					
+		      		exportedData.push(tempArray);
+		      	}
+		      });
+		   });
+		return exportedData;
 	}
 
-	$scope.vipAppointmentDelete = function() {
-		alert('Vip Appointment Delete functionality');
+	$scope.vipAppointmentDelete = function(selectedVip) {
+		if(selectedVip.length < 100) {
+			angular.forEach(selectedVip, function(value){
+		      	angular.forEach($scope.vipappointment, function(eachAppointment){
+		      	if(eachAppointment.id === value){
+		      		var deleteRequestData = {
+		      			'appointmentid' : value,
+		      			'companyid' : companyId,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid
+		      		};
+		      		var appointmentDeleteRequest =  $appointmentServices.appointmentDelete(deleteRequestData);
+		      		appointmentDeleteRequest.then(function(deleteReponse){
+		      			$state.go($state.current, {}, {reload: true});
+		      		});
+		      	}
+		      });
+		   });
+		}
+		else{
+			alert('We can delete maximum of 100 appointments at once');
+		}
 	}
 
-	$scope.vipAppointmentBlock = function() {
-		alert('Vip Appointment Block Functionality');
+	$scope.vipAppointmentBlock = function(selectedVip) {
+		var reason = prompt("Block Reason", "");
+
+		if(selectedVip.length < 100) {
+			angular.forEach(selectedVip, function(value){
+				angular.forEach($scope.vipappointment, function(eachAppointment){
+					if(eachAppointment.id === value){
+						var blockRequestData = {
+		      			'id' : value,
+		      			'parentid' : '',
+		      			'tocompany' : companyId,
+		      			'year' : eachAppointment.year,
+		      			'userid' : userId,
+		      			'uuid' : uuid,
+		      			'visitdate' : eachAppointment.visitdate,
+		      			'remarks' : reason
+			      		};
+			      		var appointmentBlockRequest =  $appointmentServices.appointmentBlock(blockRequestData);
+			      		appointmentBlockRequest.then(function(blockReponse){
+			      			$state.go($state.current, {}, {reload: true});
+			      		});
+					}
+				});
+			});
+		}
+		else {
+			alert('We can block maximum of 100 appoints at once');
+		}
 	}
 
 
@@ -508,6 +802,22 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 
 	$scope.todayCheckboxchecked = function(){
 		$('#todayAppointmentTable tbody tr').click(function(event) {
+        if (event.target.type !== 'checkbox') {
+            $(':checkbox', this).trigger('click');
+            if($(':checkbox', this). prop("checked") == false){
+            	$(this).removeClass('rv-selected-row');
+            }
+            else{
+            	 $(this).addClass('rv-selected-row');
+            }
+              
+        }
+
+    	});
+	}
+
+	$scope.vipCheckboxchecked = function(){
+		$('#vipAppointmentTable tbody tr').click(function(event) {
         if (event.target.type !== 'checkbox') {
             $(':checkbox', this).trigger('click');
             if($(':checkbox', this). prop("checked") == false){
