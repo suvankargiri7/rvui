@@ -9,10 +9,11 @@
                             <a class="nav-link nav-dropdown-toggle">Import</a>
                             <ul class = "nav-dropdown-items">
                                  <li class="nav-item">
-                                    <a class="nav-link" ui-sref-active="active" ng-csv="[]" csv-header="templateAppointmentHeader" filename="appointmentTemplate.csv"><i class="fa fa-download"></i> Download template</a>
+                                    <!--<a class="nav-link" ui-sref-active="active" ng-csv="[]" csv-header="templateAppointmentHeader" filename="appointmentTemplate.csv"><i class="fa fa-download"></i> Download template</a>-->
+                                    <a class="nav-link custom-pointer" ui-sref-active="active" ng-click="setAppointmentDownloadTemplateSettings()"><i class="fa fa-download"></i> Download template</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" ui-sref-active="active" ui-sref="app.main.import"><i class="fa fa-upload"></i> Import excel</a>
+                                <li class="nav-item"  ng-hide="!displayImportAppointment">
+                                    <a class="nav-link" ui-sref-active="active" ui-sref="app.import"><i class="fa fa-upload"></i> Import excel</a>
                                 </li>
                             </ul>
                         </li>

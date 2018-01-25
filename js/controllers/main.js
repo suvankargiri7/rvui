@@ -14,10 +14,12 @@ mainController.$inject = [
   '$userServices',
   '$companyServices',
   '$visitorServices',
-  '$appointmentServices'
+  '$appointmentServices',
+  'FileSaver',
+  'Blob'
 ];
 
-function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $cookies, $userServices, $companyServices, $visitorServices,$appointmentServices) {
+function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $cookies, $userServices, $companyServices, $visitorServices,$appointmentServices,FileSaver,Blob) {
 
   
 
@@ -25,6 +27,7 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
     $scope.appointmentToday = true;
     $scope.appointmentOverstay = false;
     $scope.appointmentVip = false;
+    $scope.displayImportAppointment = false;
     $scope.displayMailRecords = false;
     $scope.useOverstay = false;
     $scope.useVip = false;
@@ -68,8 +71,6 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
               companyPreferenceRequest.then(function(companyPreferenceresponse){
                 $companyServices.companyPreferenceDetails = companyPreferenceresponse;
                 $sessionStorage.companyPreferenceDetails = companyPreferenceresponse;
-                setAppointmentDownloadTemplateSettings(companyPreferenceresponse);
-                setMailRecordDownloadTemplateSettings(companyPreferenceresponse);
                 if ($companyServices.companyPreferenceDetails.excludemobileapps > 1)
                   {
                     excludemobileapps = 1;
@@ -97,6 +98,9 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
                   }
                   if($companyServices.companyPreferenceDetails.usemaildelivery > 0) {
                     $scope.displayMailRecords = true;
+                  }
+                   if($companyServices.companyPreferenceDetails.useadvanceappointment > 0) {
+                    $scope.displayImportAppointment = true;
                   }
 
                   if($companyServices.companyPreferenceDetails.useoverstay > 0) {
@@ -153,10 +157,15 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
     $scope.appointmentVip = false;
   }
 
-  function setAppointmentDownloadTemplateSettings(companyPreferenceSetting) {
+  $scope.setAppointmentDownloadTemplateSettings = function() {
+    var companyPreferenceSetting = $sessionStorage.companyPreferenceDetails
     var templateHeader = [];
     templateHeader.push('Name');
     templateHeader.push('Number');
+
+    if(companyPreferenceSetting.usefromcompany > 0){
+      templateHeader.push('From Company');
+    }
 
     if(companyPreferenceSetting.useaddress > 0){
       templateHeader.push('Address');
@@ -166,19 +175,13 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
       templateHeader.push('Device');
     }
 
-    if(companyPreferenceSetting.usefromcompany > 0) {
-      templateHeader.push('From Company');
-    }
-
     if(companyPreferenceSetting.usegender > 0) {
       templateHeader.push('Gender');
     }
 
-     templateHeader.push('Host');
-
-    if(companyPreferenceSetting.usehostemail > 0) {
-      templateHeader.push('Host Email');
-    }
+    templateHeader.push('Host Name');
+    templateHeader.push('Host Contact');
+    templateHeader.push('Host Email');
 
     if(companyPreferenceSetting.useidcard > 0) {
       templateHeader.push('Id card');
@@ -187,44 +190,20 @@ function mainController($scope, uuid, $http, $state,$sessionStorage, $window, $c
     if(companyPreferenceSetting.usevipstatus > 1) {
       templateHeader.push('Vip');
     }
-    $scope.templateAppointmentHeader = templateHeader;
-  }
+    var data = [];
+    var ws = XLSX.utils.json_to_sheet(data,{header: templateHeader});
+    console.log(ws);
+    //var wopts = { bookType:'xlsx', bookSST:false, type:'array' };
 
-  function setMailRecordDownloadTemplateSettings(companyPreferenceSetting) {
-    var templateHeader = [];
-    templateHeader.push('Name');
-    templateHeader.push('Number');
+      /* add to workbook */
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws);
 
-    if(companyPreferenceSetting.useaddress > 0){
-      templateHeader.push('Address');
-    }
+      /* write workbook (use type 'array' for ArrayBuffer) */
+      var wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
 
-    if(companyPreferenceSetting.useelectronicdevices > 0) {
-      templateHeader.push('Device');
-    }
-
-    if(companyPreferenceSetting.usefromcompany > 0) {
-      templateHeader.push('From Company');
-    }
-
-    if(companyPreferenceSetting.usegender > 0) {
-      templateHeader.push('Gender');
-    }
-
-     templateHeader.push('Host');
-
-    if(companyPreferenceSetting.usehostemail > 0) {
-      templateHeader.push('Host Email');
-    }
-
-    if(companyPreferenceSetting.useidcard > 0) {
-      templateHeader.push('Id card');
-    }
-
-    if(companyPreferenceSetting.usevipstatus > 1) {
-      templateHeader.push('Vip');
-    }
-    $scope.templateMailRecordHeader = templateHeader;
+      /* generate a download */
+      FileSaver.saveAs(new Blob([wbout],{type:"application/octet-stream"}), "appointmentTemplate.xlsx");
   }
 
 }

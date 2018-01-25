@@ -31,7 +31,8 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 		appointmentBuildingExit: appointmentBuildingExit,
 		appointmentCompanyExit: appointmentCompanyExit,
 		appointmentUnblock : appointmentUnblock,
-		appointmentHistoryRequest: appointmentHistoryRequest
+		appointmentHistoryRequest: appointmentHistoryRequest,
+		appointmentBulk: appointmentBulk
 	};
 
 	return appointmentServices;
@@ -179,4 +180,15 @@ function appointmentServices( uuid, $http, $state, $window,$localStorage, $sessi
 			}
 		});
 	}
+
+	function appointmentBulk(requestData) {
+		return $http.post('https://cppjs.com/api/appointment/create/advance/bulk',requestData).then(function(response){
+			if(response.data.error){
+				return "Error";
+			}
+			else {
+				return response.data;
+			}
+		});
+	} 
 }

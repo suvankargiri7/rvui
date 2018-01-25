@@ -20,8 +20,8 @@
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 tc" ng-hide="!useOverstay">
                                     <div class="card-block">
-                                      <button type="button" class="btn btn-outline-primary btn-block" ng-if="!appointmentOverstay" ng-click="showOverstay()">Overstay<span class="badge badge-info font-15">5</span></button>
-                                      <button type="button" class="btn btn-primary btn-block" ng-if="appointmentOverstay">Overstay<span class="badge badge-info font-15">5</span></button>
+                                      <button type="button" class="btn btn-outline-primary btn-block" ng-if="!appointmentOverstay" ng-click="showOverstay()">Overstay<span class="badge badge-info font-15">{{ overstayappointment.length > 0 && overstayappointment.length || 0 }}</span></button>
+                                      <button type="button" class="btn btn-primary btn-block" ng-if="appointmentOverstay">Overstay<span class="badge badge-info font-15">{{ overstayappointment.length > 0 && overstayappointment.length || 0 }}</span></button>
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 tc" ng-hide="!useVip">
@@ -85,7 +85,7 @@
                                 <button class="btn btn-secondary rv-mark-exit" type="button" ng-click="todayAppointmentMarkExit(selectionAppointment)" ng-if="!disableMarkExit">
                                     Mark exit
                                 </button>
-                                <button class="btn btn-secondary rv-export" type="button" ng-csv="exportTodaysSelectedData(selectionAppointment)" filename="appointments.csv" ng-hide="selectionAppointment.length < 1">
+                                <button class="btn btn-secondary rv-export" type="button" ng-click="exportTodaysSelectedData(selectionAppointment)" ng-hide="selectionAppointment.length < 1">
                                     Export
                                 </button>
                                 <button class="btn btn-secondary rv-delete" type="button" ng-click="todayAppointmentDelete(selectionAppointment)">
@@ -129,14 +129,13 @@
                                 </div>
                               </th>
                               <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
-                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.gateentrytime && !tAppointment.gateexittime" class="entered">
+                                <span ng-if="tAppointment.gateentrytime && !tAppointment.gateexittime" class="entered">
                                   Entered
                                 </span>
-                                <span ng-if="tAppointment.isblocked < 1 && !tAppointment.gateentrytime" class="expected">
+                                <span ng-if="!tAppointment.gateentrytime" class="expected">
                                   Expected
                                 </span>
-                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.gateexittime" class="exited"> Exited </span>
-                                <span ng-if="tAppointment.isblocked > 0" class="blocked">Blocked</span>
+                                <span ng-if="tAppointment.gateexittime" class="exited"> Exited </span>
                                 <img src="/img/blocked.png" ng-if="tAppointment.isblocked > 0" class="margin-left-bottom-5">
                                 <img src="/img/desktop.png" ng-if="tAppointment.isblocked < 1 && tAppointment.hostapprovalstatus ==1 && tAppointment.creatorid == 2" class="margin-left-bottom-5">
                                 <img src="/img/mobile.png" ng-if="tAppointment.isblocked < 1 && tAppointment.hostapprovalstatus ==1 && tAppointment.creatorid == 3" class="margin-left-bottom-5">
@@ -144,14 +143,13 @@
                                 <img src="/img/rejected.png" ng-if="tAppointment.isblocked < 1 && tAppointment.hostapprovalstatus > 1 && tAppointment.hostapprovalstatus != 3" class="margin-left-bottom-5">
                               </td>
                               <td ng-if="userrole==='role_company_building_gate'">
-                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.buildingentrytime && !tAppointment.buildingexittime" class="entered">
+                                <span ng-if="tAppointment.buildingentrytime && !tAppointment.buildingexittime" class="entered">
                                   Entered
                                 </span>
-                                <span ng-if="tAppointment.isblocked < 1 && !tAppointment.buildingentrytime" class="expected">
+                                <span ng-if="!tAppointment.buildingentrytime" class="expected">
                                   Expected
                                 </span>
-                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.buildingexittime" class="exited"> Exited </span>
-                                <span ng-if="tAppointment.isblocked > 0" class="blocked">Blocked</span>
+                                <span ng-if="tAppointment.buildingexittime" class="exited"> Exited </span>
                                 <img src="/img/blocked.png" ng-if="tAppointment.isblocked > 0" class="margin-left-bottom-5">
                                 <img src="/img/desktop.png" ng-if="tAppointment.isblocked < 1 && tAppointment.hostapprovalstatus ==1 && tAppointment.creatorid == 2" class="margin-left-bottom-5">
                                 <img src="/img/mobile.png" ng-if="tAppointment.isblocked < 1 && tAppointment.hostapprovalstatus ==1 && tAppointment.creatorid == 3" class="margin-left-bottom-5">
@@ -159,14 +157,13 @@
                                 <img src="/img/rejected.png" ng-if="tAppointment.isblocked < 1 && tAppointment.hostapprovalstatus > 1 && tAppointment.hostapprovalstatus != 3" class="margin-left-bottom-5">
                               </td>
                               <td ng-if="userrole==='role_company_reception'">
-                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.companyentrytime && !tAppointment.companyexittime" class="entered">
+                                <span ng-if="tAppointment.companyentrytime && !tAppointment.companyexittime" class="entered">
                                   Entered
                                 </span>
-                                <span ng-if="tAppointment.isblocked < 1 && !tAppointment.companyentrytime" class="expected">
+                                <span ng-if="!tAppointment.companyentrytime" class="expected">
                                   Expected
                                 </span>
-                                <span ng-if="tAppointment.isblocked < 1 && tAppointment.companyexittime" class="exited"> Exited </span>
-                                <span ng-if="tAppointment.isblocked > 0" class="blocked">Blocked</span>
+                                <span ng-if="tAppointment.companyexittime" class="exited"> Exited </span>
                                 <img src="/img/blocked.png" ng-if="tAppointment.isblocked > 0" class="margin-left-bottom-5">
                                 <img src="/img/desktop.png" ng-if="tAppointment.isblocked < 1 && tAppointment.hostapprovalstatus ==1 && tAppointment.creatorid == 2" class="margin-left-bottom-5">
                                 <img src="/img/mobile.png" ng-if="tAppointment.isblocked < 1 && tAppointment.hostapprovalstatus ==1 && tAppointment.creatorid == 3" class="margin-left-bottom-5">
@@ -224,34 +221,36 @@
                 <div class="row" ng-hide="!appointmentOverstay">
                       <div class="col-sm-12">
                         <div class="row">
-                            <div class="col-sm-2">
+                            <div class="col-sm-2" ng-if="overstayappointment.length > 0">
                                 <div class="dropdown">
                                   <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    None
+                                    <span ng-if="selectionOverStay.length < 1">None</span>
+                                    <span ng-if="selectionOverStay.length > 0 && selectionOverStay.length < overstayappointment.length">Selected</span>
+                                    <span ng-if="selectionOverStay.length == overstayappointment.length">All</span>
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">None</a>
-                                    <a class="dropdown-item" href="#">All</a>
+                                    <a class="dropdown-item" href="#" ng-click="unselectAllAppointmentOverstay()">None</a>
+                                    <a class="dropdown-item" href="#" ng-click="selectAllAppointmentOverstay()">All</a>
                                   </div>
                                 </div>
                             </div>
-                            <div class="col-sm-10">
-                               <button class="btn btn-secondary rv-view" type="button" ng-click="overstayView()" ng-hide="">
+                            <div class="col-sm-10" ng-hide="selectionOverStay.length < 1">
+                               <button class="btn btn-secondary rv-view" type="button" ng-click="overstayView(selectionOverStay)" ng-hide="selectionOverStay.length > 1">
                                     View
                                 </button>
-                                <button class="btn btn-secondary rv-edit" type="button" ng-click="overstayEdit()" ng-hide="">
+                                <button class="btn btn-secondary rv-edit" type="button" ng-click="overstayEdit(selectionOverStay)" ng-hide="selectionOverStay.length > 1 ">
                                     Edit
                                 </button>
-                                <button class="btn btn-secondary rv-mark-exit" type="button" ng-click="overstayMarkExit()" ng-hide="">
+                                <button class="btn btn-secondary rv-mark-exit" type="button" ng-click="overstayMarkExit(selectionOverStay)" ng-hide="" ng-if="!disableMarkExit">
                                     Mark exit
                                 </button>
-                                <button class="btn btn-secondary rv-export" type="button" ng-click="overstayExport()">
+                                <button class="btn btn-secondary rv-export" type="button" ng-click="overstayExport(selectionOverStay)" ng-hide="selectionOverStay.length < 1">
                                     Export
                                 </button>
-                                <button class="btn btn-secondary rv-delete" type="button" ng-click="overstayDelete()">
+                                <button class="btn btn-secondary rv-delete" type="button" ng-click="overstayDelete(selectionOverStay)">
                                     Delete
                                 </button>
-                                <button class="btn btn-secondary rv-block" type="button" ng-click="overstayBlock()">
+                                <button class="btn btn-secondary rv-block" type="button" ng-click="overstayBlock(selectionOverStay)" ng-if="!disableOverstayBlock">
                                     Block
                                 </button>
                             </div>
@@ -261,7 +260,7 @@
                     <!--/.row-->
                     <div class="padding-top-16">
                         <!-- Overstay -->
-                        <table class="table">
+                        <table class="table" id="overstayTable">
                           <thead>
                             <tr>
                               <th scope="col">#</th>
@@ -276,21 +275,100 @@
                               <th scope="col">Exit Time</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td><input type="checkbox"></td>
+                          <tbody ng-hide="overstayappointment.length == 0">
+                            <tr ng-repeat="oAppointment in overstayappointment | filter: appointmentSearch" ng-click="overstayCheckboxchecked()">
+                              <td><input type="checkbox"
+                                          name="selectionOverStay[]"
+                                          value="{{oAppointment.id}}"
+                                          ng-model="oAppointment.selected"
+                                          ng-checked="selectionOverStay.indexOf(oAppointment.id) > -1"
+                                          ng-click="toggleOverStaySelection(oAppointment)"></td>
                               <th scope="row">
                                 <div class="avatar">
-                                    <img ng-src="img/avatars/1.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" src="img/avatars/1.jpg">
+                                    <img ng-src="https://cppjs.com/api/visitor/visitorid/{{oAppointment.visitorid}}/photo/user/{{userid}}/uuid/{{uuid}}" class="img-avatar" alt="visitor image" src="img/avatars/1.jpg">
                                 </div>
                               </th>
-                              <td>Mark overstay</td>
-                              <td>Otto</td>
-                              <td>@mdo</td>
-                              <td>tete</td>
-                              <td>hdhsa</td>
-                              <td>dadsda</td>
-                              <td>adasdsa</td>
+                              <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                <span ng-if="oAppointment.gateentrytime && !oAppointment.gateexittime" class="entered">
+                                  Entered
+                                </span>
+                                <span ng-if="!oAppointment.gateentrytime" class="expected">
+                                  Expected
+                                </span>
+                                <span ng-if="oAppointment.gateexittime" class="exited"> Exited </span>
+                                <img src="/img/blocked.png" ng-if="oAppointment.isblocked > 0" class="margin-left-bottom-5">
+                                <img src="/img/desktop.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus ==1 && oAppointment.creatorid == 2" class="margin-left-bottom-5">
+                                <img src="/img/mobile.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus ==1 && oAppointment.creatorid == 3" class="margin-left-bottom-5">
+                                <img src="/img/approved.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus > 1 && oAppointment.hostapprovalstatus == 3" class="margin-left-bottom-5">
+                                <img src="/img/rejected.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus > 1 && oAppointment.hostapprovalstatus != 3" class="margin-left-bottom-5">
+                              </td>
+                              <td ng-if="userrole==='role_company_building_gate'">
+                                <span ng-if="oAppointment.buildingentrytime && !oAppointment.buildingexittime" class="entered">
+                                  Entered
+                                </span>
+                                <span ng-if="!oAppointment.buildingentrytime" class="expected">
+                                  Expected
+                                </span>
+                                <span ng-if="oAppointment.buildingexittime" class="exited"> Exited </span>
+                                <img src="/img/blocked.png" ng-if="oAppointment.isblocked > 0" class="margin-left-bottom-5">
+                                <img src="/img/desktop.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus ==1 && oAppointment.creatorid == 2" class="margin-left-bottom-5">
+                                <img src="/img/mobile.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus ==1 && oAppointment.creatorid == 3" class="margin-left-bottom-5">
+                                <img src="/img/approved.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus > 1 && oAppointment.hostapprovalstatus == 3" class="margin-left-bottom-5">
+                                <img src="/img/rejected.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus > 1 && oAppointment.hostapprovalstatus != 3" class="margin-left-bottom-5">
+                              </td>
+                              <td ng-if="userrole==='role_company_reception'">
+                                <span ng-if="oAppointment.companyentrytime && !oAppointment.companyexittime" class="entered">
+                                  Entered
+                                </span>
+                                <span ng-if="!oAppointment.companyentrytime" class="expected">
+                                  Expected
+                                </span>
+                                <span ng-if="oAppointment.companyexittime" class="exited"> Exited </span>
+                                <img src="/img/blocked.png" ng-if="oAppointment.isblocked > 0" class="margin-left-bottom-5">
+                                <img src="/img/desktop.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus ==1 && oAppointment.creatorid == 2" class="margin-left-bottom-5">
+                                <img src="/img/mobile.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus ==1 && oAppointment.creatorid == 3" class="margin-left-bottom-5">
+                                <img src="/img/approved.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus > 1 && oAppointment.hostapprovalstatus == 3" class="margin-left-bottom-5">
+                                <img src="/img/rejected.png" ng-if="oAppointment.isblocked < 1 && oAppointment.hostapprovalstatus > 1 && oAppointment.hostapprovalstatus != 3" class="margin-left-bottom-5">
+                              </td>
+                              <td>{{oAppointment.visitorpassno}}</td>
+                              <td>{{oAppointment.visitorname}}<br>
+                                {{ !oAppointment.visitormobile && '--' || oAppointment.visitormobile }}
+                              </td>
+                              <td>{{oAppointment.visiteename}}<br>
+                                {{ !oAppointment.visiteemobile && '--' || oAppointment.visiteemobile }}
+                              </td>
+                              <td>{{oAppointment.fromcompany}}</td>
+                              <td>{{oAppointment.purpose}}</td>
+
+                              <!-- Role Receptions-->
+                              <td ng-if="userrole==='role_company_reception'">
+                                {{ !oAppointment.companyentrytime && '--' || oAppointment.companyentrytime }}
+                              </td>
+                              <td ng-if="userrole==='role_company_reception'">
+                                {{ !oAppointment.companyexittime && '--' || oAppointment.companyexittime }}
+                              </td>
+
+                              <!-- Role Building Gate -->
+                              <td ng-if="userrole==='role_company_building_gate'">
+                                {{ !oAppointment.buildingentrytime && '--' || oAppointment.buildingentrytime }}
+                              </td>
+                              <td ng-if="userrole==='role_company_building_gate'">
+                                {{ !oAppointment.buildingexittime && '--' || oAppointment.buildingexittime }}
+                              </td>
+
+                              <!-- Role Gate and Admin -->
+                              <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                {{ !oAppointment.gateentrytime && '--' || oAppointment.gateentrytime }}
+                              </td>
+                              <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
+                                {{ !oAppointment.gateexittime && '--' || oAppointment.gateexittime }}
+                              </td>
+
+                            </tr>
+                          </tbody>
+                          <tbody ng-show="overstayappointment.length == 0">
+                            <tr>
+                                <td colspan="8"> No Data Found </td>
                             </tr>
                           </tbody>
                         </table>
@@ -327,7 +405,7 @@
                                 <button class="btn btn-secondary rv-mark-exit" type="button" ng-click="vipAppointmentMarkExit(selectionVip)" ng-hide="selectionVip.length > 1" ng-if="!disableVipMarkExit">
                                     Mark exit
                                 </button>
-                                <button class="btn btn-secondary rv-export" type="button" ng-csv="exportVipSelectedData(selectionVip)" filename="vipappointments.csv" ng-hide="selectionVip.length < 1">
+                                <button class="btn btn-secondary rv-export" type="button" ng-click="exportVipSelectedData(selectionVip)" ng-hide="selectionVip.length < 1">
                                     Export
                                 </button>
                                 <button class="btn btn-secondary rv-delete" type="button" ng-click="vipAppointmentDelete(selectionVip)">
@@ -371,14 +449,13 @@
                                 </div>
                               </th>
                               <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
-                                <span ng-if="vAppointment.isblocked < 1 && vAppointment.gateentrytime && !vAppointment.gateexittime" class="entered">
+                                <span ng-if="vAppointment.gateentrytime && !vAppointment.gateexittime" class="entered">
                                   Entered
                                 </span>
-                                <span ng-if="vAppointment.isblocked < 1 && !vAppointment.gateentrytime" class="expected">
+                                <span ng-if="!vAppointment.gateentrytime" class="expected">
                                   Expected
                                 </span>
-                                <span ng-if="vAppointment.isblocked < 1 && vAppointment.gateexittime" class="exited"> Exited </span>
-                                <span ng-if="vAppointment.isblocked > 0" class="blocked">Blocked</span>
+                                <span ng-if="vAppointment.gateexittime" class="exited"> Exited </span>
                                 <img src="/img/blocked.png" ng-if="vAppointment.isblocked > 0" class="margin-left-bottom-5">
                                 <img src="/img/desktop.png" ng-if="vAppointment.isblocked < 1 && vAppointment.hostapprovalstatus ==1 && vAppointment.creatorid == 2" class="margin-left-bottom-5">
                                 <img src="/img/mobile.png" ng-if="vAppointment.isblocked < 1 && vAppointment.hostapprovalstatus ==1 && vAppointment.creatorid == 3" class="margin-left-bottom-5">
@@ -386,14 +463,13 @@
                                 <img src="/img/rejected.png" ng-if="vAppointment.isblocked < 1 && vAppointment.hostapprovalstatus > 1 && vAppointment.hostapprovalstatus != 3" class="margin-left-bottom-5">
                               </td>
                               <td ng-if="userrole==='role_company_building_gate'">
-                                <span ng-if="vAppointment.isblocked < 1 && vAppointment.buildingentrytime && !vAppointment.buildingexittime" class="entered">
+                                <span ng-if="vAppointment.buildingentrytime && !vAppointment.buildingexittime" class="entered">
                                   Entered
                                 </span>
-                                <span ng-if="vAppointment.isblocked < 1 && !vAppointment.buildingentrytime" class="expected">
+                                <span ng-if="!vAppointment.buildingentrytime" class="expected">
                                   Expected
                                 </span>
-                                <span ng-if="vAppointment.isblocked < 1 && vAppointment.buildingexittime" class="exited"> Exited </span>
-                                <span ng-if="vAppointment.isblocked > 0" class="blocked">Blocked</span>
+                                <span ng-if="vAppointment.buildingexittime" class="exited"> Exited </span>
                                 <img src="/img/blocked.png" ng-if="vAppointment.isblocked > 0" class="margin-left-bottom-5">
                                 <img src="/img/desktop.png" ng-if="vAppointment.isblocked < 1 && vAppointment.hostapprovalstatus ==1 && vAppointment.creatorid == 2" class="margin-left-bottom-5">
                                 <img src="/img/mobile.png" ng-if="vAppointment.isblocked < 1 && vAppointment.hostapprovalstatus ==1 && vAppointment.creatorid == 3" class="margin-left-bottom-5">
@@ -401,14 +477,13 @@
                                 <img src="/img/rejected.png" ng-if="vAppointment.isblocked < 1 && vAppointment.hostapprovalstatus > 1 && vAppointment.hostapprovalstatus != 3" class="margin-left-bottom-5">
                               </td>
                               <td ng-if="userrole==='role_company_reception'">
-                                <span ng-if="vAppointment.isblocked < 1 && vAppointment.companyentrytime && !vAppointment.companyexittime" class="entered">
+                                <span ng-if="vAppointment.companyentrytime && !vAppointment.companyexittime" class="entered">
                                   Entered
                                 </span>
-                                <span ng-if="vAppointment.isblocked < 1 && !vAppointment.companyentrytime" class="expected">
+                                <span ng-if="!vAppointment.companyentrytime" class="expected">
                                   Expected
                                 </span>
-                                <span ng-if="vAppointment.isblocked < 1 && vAppointment.companyexittime" class="exited"> Exited </span>
-                                <span ng-if="vAppointment.isblocked > 0" class="blocked">Blocked</span>
+                                <span ng-if="vAppointment.companyexittime" class="exited"> Exited </span>
                                 <img src="/img/blocked.png" ng-if="vAppointment.isblocked > 0" class="margin-left-bottom-5">
                                 <img src="/img/desktop.png" ng-if="vAppointment.isblocked < 1 && vAppointment.hostapprovalstatus ==1 && vAppointment.creatorid == 2" class="margin-left-bottom-5">
                                 <img src="/img/mobile.png" ng-if="vAppointment.isblocked < 1 && vAppointment.hostapprovalstatus ==1 && vAppointment.creatorid == 3" class="margin-left-bottom-5">

@@ -1,0 +1,66 @@
+<div class="animated fadeIn" ng-controller="appointmentImportController">
+    <div class="row">
+        <div class="col-md-12">            
+            <div class="card">
+              <div class="card-header">
+                <h5>Appointment Import</h5>
+              </div>
+              <div class="card-block">
+                <form name="importExcelForm" novalidate>
+                    <div class="form-group">
+                        <label><i class="icon-user"></i> Upload Excel</label>
+                        <input type="file" name="importfile" class="form-control" id="importappointment" import-sheet-js="">
+                    </div>
+                </form>
+              </div>
+              <div class="card">
+                <div class="card-block" ng-if="displayNxtImportForm">
+                  <div class="row">
+                      <div class="col-sm-2">
+                         
+                              <small class="text-muted">Visit date</small>
+                              <br>
+                               <datepicker date-format="yyyy-MM-dd">
+                                <input ng-model="visitdate" type="text" class="form-control"/>
+                              </datepicker>
+                      </div>
+                      <!--/.col-->
+                      <div class="col-sm-2">
+                         
+                              <small class="text-muted">Visit Expire date</small>
+                              <br>
+                              <datepicker date-format="yyyy-MM-dd">
+                                <input ng-model="visitexpiredate" type="text" class="form-control"/>
+                              </datepicker>
+                      </div>
+                      <!--/.col-->
+                      <div class="col-sm-2">
+                          
+                              <small class="text-muted">Company To Visit</small>
+                              <br>
+                              <select class="custom-select" ng-model="tovisit" ng-options="item as item.displaylabel for item in listOfCompany track by item.companyid"> </select>
+                      </div>
+                      <div class="col-sm-2">
+                          
+                              <small class="text-muted">Purpose</small>
+                              <br>
+                              <select class="custom-select" ng-model="purpose" ng-options="x for x in companyPurpose"> </select>
+                      </div>
+                      <div class="col-sm-2" ng-hide="companyPreference.useidcard < 1">       
+                              <small class="text-muted">Id card</small>
+                              <br>
+                              <select class="custom-select" ng-model="idcard" ng-options="x for x in allIdTypes"> </select>
+                      </div>
+                      <div class="col-sm-2">       
+                              <br>
+                              <button class="btn btn-success" ng-click="importData(importedAppointmentData, visitdate, visitexpiredate, tovisit, purpose,idcard)">Import</button>
+                      </div>
+
+                  </div>
+              </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>

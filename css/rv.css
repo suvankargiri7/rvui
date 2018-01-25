@@ -158,25 +158,25 @@
   background-color: #BDBDBD;
 }
 .rv-view {
-  background-color: #80CBC4;
+  background-color: #e4e5e6;
 }
 .rv-edit {
-  background-color: #B39DDB;
+  background-color: #e4e5e6;
 }
 .rv-mark-exit {
-  background-color: #DCE775;
+  background-color: #e4e5e6;
 }
 .rv-mark-entry{
-  background-color: #BCAAA4;
+  background-color: #e4e5e6;
 }
 .rv-export{
-  background-color: #AED581;
+  background-color: #e4e5e6;
 }
 .rv-delete {
-  background-color: #FF8A65;
+  background-color: #e4e5e6;
 }
 .rv-block {
-  background-color: #E57373;
+  background-color: #e4e5e6;
 }
 .margin-left-bottom-5 {
   margin-left:5px;
@@ -203,4 +203,10 @@
 .blocked {
   padding:3px;
   font-weight: bold;
+}
+.custom-pointer {
+  cursor: pointer;
+}
+.header-fixed .app-body {
+  min-height: 540px;
 }

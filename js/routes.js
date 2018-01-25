@@ -29,6 +29,12 @@ angular
     params: { subtitle: 'Appointment History' },
     controller: 'appointmentHistoryController'
   })
+  .state('app.import', {
+    url: '/appointment/import',
+    templateUrl: 'views/appointmentimport.html',
+    params: { subtitle: 'Appointment Import' },
+    controller: 'appointmentImportController'
+  })
   .state('app.mail', {
     url: '/mailrecord',
     templateUrl: 'views/mailrecord.html',

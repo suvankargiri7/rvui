@@ -20,7 +20,8 @@ angular
   'ngCookies',
   '720kb.datepicker',
   'ngSanitize', 
-  'ngCsv'
+  'ngCsv',
+  'ngFileSaver'
 ])
 
 .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
