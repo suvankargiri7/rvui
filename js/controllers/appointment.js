@@ -30,6 +30,7 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
 	console.log($scope.appointmentToday);
 	console.log($scope.appointmentOverstay);
 	console.log($scope.appointmentVip);
+	var stop;
   $scope.showOverstay = function(){
     $scope.appointmentToday = false;
     $scope.appointmentOverstay = true;
@@ -86,63 +87,63 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
   }
 	
 	if($scope.appointmentToday || $scope.appointmentVip || $scope.appointmentOverstay) { 
-				stop = $interval(function() {
-				var todaysappointRequestData = {
-					"excludemobileapps": excludemobileapps,
-					"companyid" : companyId,
-					"userid" : userId,
-					"uuid" : uuid
-					};
-					var todaysappointRequest = $appointmentServices.appointmentTodayListRequest(todaysappointRequestData);
-					todaysappointRequest.then(function(todaysappointResponse){
-						$localStorage.todayAppointments  = todaysappointResponse;
-						var todayappointment = [];
-						var vipappointment = [];
-						var overstayappointment = [];
-						for (var key in todaysappointResponse)
-						{
-						    if(todaysappointResponse[key].vipstatus==0) {
-						    	todayappointment.push(todaysappointResponse[key]);
-						    }
-						    if(todaysappointResponse[key].vipstatus==1) {
-						    	vipappointment.push(todaysappointResponse[key]);
-						    }
+		stop = $interval(function() {
+		var todaysappointRequestData = {
+			"excludemobileapps": excludemobileapps,
+			"companyid" : companyId,
+			"userid" : userId,
+			"uuid" : uuid
+			};
+			var todaysappointRequest = $appointmentServices.appointmentTodayListRequest(todaysappointRequestData);
+			todaysappointRequest.then(function(todaysappointResponse){
+				$localStorage.todayAppointments  = todaysappointResponse;
+				var todayappointment = [];
+				var vipappointment = [];
+				var overstayappointment = [];
+				for (var key in todaysappointResponse)
+				{
+				    if(todaysappointResponse[key].vipstatus==0) {
+				    	todayappointment.push(todaysappointResponse[key]);
+				    }
+				    if(todaysappointResponse[key].vipstatus==1) {
+				    	vipappointment.push(todaysappointResponse[key]);
+				    }
 
-						    var gateentrytime = '';
-					      	var gateexittime = '';
-					      	if($sessionStorage.userDetails.userrole==='role_company_building_gate') {
-					      		gateentrytime = todaysappointResponse[key].buildingentrytime;
-					      		gateexittime =  todaysappointResponse[key].buildingexittime;
-					      	}
-					      	else if($sessionStorage.userDetails.userrole==='role_company_reception') {
-					      		gateentrytime = todaysappointResponse[key].companyentrytime;
-					      		gateexittime = todaysappointResponse[key].companyexittime;
-					      	}
-					      	else {
-					      		gateentrytime = todaysappointResponse[key].gateentrytime;
-					      		gateexittime = todaysappointResponse[key].gateexittime;
-					      	}
-					      	if(gateentrytime){
-					      		var enrtybits = gateentrytime.split(/\D/);
-								var entryDateObject = new Date(enrtybits[0], --enrtybits[1], enrtybits[2], enrtybits[3], enrtybits[4], enrtybits[5]);
-								var expectExitDateObj = new Date(entryDateObject.getTime() + todaysappointResponse[key].duration*60000);
-								var currentDateObj = new Date();
+				    var gateentrytime = '';
+			      	var gateexittime = '';
+			      	if($sessionStorage.userDetails.userrole==='role_company_building_gate') {
+			      		gateentrytime = todaysappointResponse[key].buildingentrytime;
+			      		gateexittime =  todaysappointResponse[key].buildingexittime;
+			      	}
+			      	else if($sessionStorage.userDetails.userrole==='role_company_reception') {
+			      		gateentrytime = todaysappointResponse[key].companyentrytime;
+			      		gateexittime = todaysappointResponse[key].companyexittime;
+			      	}
+			      	else {
+			      		gateentrytime = todaysappointResponse[key].gateentrytime;
+			      		gateexittime = todaysappointResponse[key].gateexittime;
+			      	}
+			      	if(gateentrytime){
+			      		var enrtybits = gateentrytime.split(/\D/);
+						var entryDateObject = new Date(enrtybits[0], --enrtybits[1], enrtybits[2], enrtybits[3], enrtybits[4], enrtybits[5]);
+						var expectExitDateObj = new Date(entryDateObject.getTime() + todaysappointResponse[key].duration*60000);
+						var currentDateObj = new Date();
 
-								if (currentDateObj.getTime() > expectExitDateObj.getTime() && !gateexittime) {
-								    overstayappointment.push(angular.copy(todaysappointResponse[key]));
-								}
-					      	}
-							
-						   
+						if (currentDateObj.getTime() > expectExitDateObj.getTime() && !gateexittime) {
+						    overstayappointment.push(angular.copy(todaysappointResponse[key]));
 						}
-						$scope.todaysAppointment = todayappointment;
-						console.log('Todays---->>',$scope.todaysAppointment);
-						$scope.vipappointment = vipappointment;
-						console.log('Vip---->>',$scope.vipappointment);
-						$scope.overstayappointment = overstayappointment;
-					});
+			      	}
+					
+				   
+				}
+				$scope.todaysAppointment = todayappointment;
+				console.log('Todays---->>',$scope.todaysAppointment);
+				$scope.vipappointment = vipappointment;
+				console.log('Vip---->>',$scope.vipappointment);
+				$scope.overstayappointment = overstayappointment;
+			});
 
-				},5000);
+		},5000);
 		
 		
 	}
@@ -159,6 +160,8 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
 
 	$scope.toggleSelection = function toggleSelection(fruitName) {
 		$scope.stopFight();
+		//$interval.cancel(stop);
+        //stop = undefined;
 	    var idx = $scope.selectionAppointment.indexOf(fruitName.id);
 	    // Is currently selected
 	    if (idx > -1) {
@@ -534,8 +537,7 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
 	$scope.selectionVip = [];
 
 	$scope.toggleVipSelection = function toggleVipSelection(fruitName) {
-		$interval.cancel(stop);
-        stop = undefined;
+		$scope.stopFight();
 	    var idx = $scope.selectionVip.indexOf(fruitName.id);
 	    // Is currently selected
 	    if (idx > -1) {
@@ -907,8 +909,7 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
 	$scope.selectionOverStay = [];
 
 	$scope.toggleOverStaySelection = function toggleOverStaySelection(fruitName) {
-		$interval.cancel(stop);
-        stop = undefined;
+	    $scope.stopFight();
 	    var idx = $scope.selectionOverStay.indexOf(fruitName.id);
 	    // Is currently selected
 	    if (idx > -1) {
@@ -920,7 +921,6 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
 	      $scope.selectionOverStay.push(fruitName.id);
 	    }
 	    checkAnyOverstayblockItem($scope.selectionOverStay);
-	    $scope.stopFight();
     };
 
     function checkAnyOverstayblockItem(selectionAppointment) {
@@ -1259,6 +1259,8 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
 
     	});
 	}
+
+	
 
     $scope.$on('$destroy', function() {
       // Make sure that the interval is destroyed too
