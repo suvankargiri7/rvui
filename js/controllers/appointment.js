@@ -106,7 +106,7 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
 				    	todayappointment.push(todaysappointResponse[key]);
 				    }
 				    if(todaysappointResponse[key].vipstatus==1) {
-				    	vipappointment.push(todaysappointResponse[key]);
+				    	vipappointment.push(angular.copy(todaysappointResponse[key]));
 				    }
 
 				    var gateentrytime = '';
@@ -1260,7 +1260,7 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
     	});
 	}
 
-	
+
 
     $scope.$on('$destroy', function() {
       // Make sure that the interval is destroyed too
