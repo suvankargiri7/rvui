@@ -67,7 +67,7 @@
                                   <button class="btn btn-secondary rv-view" type="button" ng-click="appointmentView(selectionAppointment)" ng-if="selectionAppointment.length == 1">
                                     View
                                 </button>
-                                    <button class="btn btn-secondary rv-export" type="button" ng-hide="selectionAppointment.length < 1" ng-csv="exportSelectedData(selectionAppointment)" filename="appointmentHistory.csv" >
+                                    <button class="btn btn-secondary rv-export" type="button" ng-hide="selectionAppointment.length < 1" ng-click="exportSelectedData(selectionAppointment)">
                                         Export
                                     </button>
                                     <button class="btn btn-secondary rv-delete" type="button" ng-hide="selectionAppointment.length < 1" ng-click="appointmentDelete(selectionAppointment)">
@@ -189,4 +189,41 @@
     </div>
     <!--/.row-->
 
+</div>
+
+
+<div  class="modal fade" role="dialog" id="maxAppointmentBlockModal">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+       
+        We can block maximum of 100 appointments at once.
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<div  class="modal fade" role="dialog" id="maxAppointmentDeleteModal">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+       
+        We can delete maximum of 100 appointments at once.
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+
+  </div>
 </div>

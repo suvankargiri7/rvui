@@ -26,17 +26,27 @@ function appointmentImportController($scope, uuid, $http, $state, $window, $cook
 	$scope.listOfCompany = [];
 	$scope.importedAppointmentData = [];
 	$scope.displayNxtImportForm = false;
+	$scope.displayInvalildData = false; 
 	$scope.companyPreference = $sessionStorage.companyPreferenceDetails;
+	$scope.visitdateavilable = true;
+	$scope.visitexpiredateavilable = true;
+	$scope.tocompanyavailable = true;
+	$scope.purposeavailable = true;
+	$scope.idcardavailable = true;
+	$scope.maxrowtoimport = true;
+	$scope.datainfile = true;
 	$scope.$on('notification', function (evt,value) {
         if (value) {
         	var allGood = checkAllGood(value);
         	if(allGood){
+        		$scope.displayInvalildData = false;
         		$scope.importedAppointmentData = value;
 	        	$scope.displayNxtImportForm = true;
 	            $scope.$apply();
         	}
         	else {
-        		alert('oops');
+        		$scope.displayInvalildData = true;
+        		$scope.$apply();
         	}
         	
         }
@@ -199,25 +209,27 @@ function appointmentImportController($scope, uuid, $http, $state, $window, $cook
     	var year='';
     	var completeArray = [];
     	if(importdata.length > 400) {
-    		alert('you can import max 400 at a time');
+    		$scope.maxrowtoimport = false;
     	}
     	else if (importdata.length===0){
-    		alert('No data to import');
+    		$scope.datainfile = false;
+
     	}
     	else if(!visitdate ||  visitdate===''){
-    		alert('No Visit date');
+    		$scope.visitdateavilable = false;
+
     	}
     	else if(!visitexpireDate || visitexpireDate===''){
-    		alert('No Visit expire date');
+    		$scope.visitexpiredateavilable = false;
     	}
     	else if(!tocompany){
-    		alert('Choose company');
+    		$scope.tocompanyavailable = false;
     	}
     	else if(!purpose) {
-    		alert('Choose Purpose');
+    		$scope.purposeavailable = false;
     	}
     	else if($scope.companyPreference.useidcard > 0 && !idcard) {
-    		alert('choose id card');
+    		$scope.idcardavailable = false;
     	}
     	else {
 
@@ -282,11 +294,52 @@ function appointmentImportController($scope, uuid, $http, $state, $window, $cook
 				}
 			}
 
-    		
+    		Promise.all(completeArray).then(function(values) {
+		  		$state.go('app.main');
+			});
     	}
-    	Promise.all(completeArray).then(function(values) {
-		  $state.go('app.main');
-		});
+    	
+    }
+
+    $scope.checkVisitDate = function(visitdate) {
+    	if(visitdate) {
+    		$scope.visitdateavilable = true;
+    	}
+    	else{
+    		$scope.visitdateavilable = false;
+    	}
+    }
+    $scope.checkExpireVisitDate = function(date) {
+    	if(date) {
+    		$scope.visitexpiredateavilable = true;
+    	}
+    	else{
+    		$scope.visitexpiredateavilable = false;
+    	}
+    }
+    $scope.checkToCompany = function(tocompany) {
+    	if(tocompany) {
+    		$scope.tocompanyavailable = true;
+    	}
+    	else{
+    		$scope.tocompanyavailable = false;
+    	}
+    }
+    $scope.checkPurpose = function(purpose) {
+    	if(purpose) {
+    		$scope.purposeavailable = true;
+    	}
+    	else{
+    		$scope.purposeavailable = false;
+    	}
+    }
+    $scope.checkIdCard = function(idCard) {
+    	if(idCard) {
+    		$scope.idcardavailable = true;
+    	}
+    	else{
+    		$scope.idcardavailable = false;
+    	}
     }
 
 }

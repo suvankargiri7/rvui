@@ -6,6 +6,7 @@ angular
 appointmentController.$inject = [
   '$scope',
   'uuid',
+  '$interval',
   '$http',
   '$state',
   '$window',
@@ -17,7 +18,7 @@ appointmentController.$inject = [
   'Blob'
 ];
 
-function appointmentController($scope, uuid, $http, $state, $window, $cookies, $localStorage, $sessionStorage,$appointmentServices,FileSaver,Blob) {
+function appointmentController($scope, uuid, $interval, $http, $state, $window, $cookies, $localStorage, $sessionStorage,$appointmentServices,FileSaver,Blob) {
 	var excludemobileapps = $sessionStorage.excludemobileapps;
 	var companyId = $sessionStorage.userDetails.companyid;
 	var userId = $sessionStorage.userDetails.userid;
@@ -29,7 +30,6 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	console.log($scope.appointmentToday);
 	console.log($scope.appointmentOverstay);
 	console.log($scope.appointmentVip);
-
   $scope.showOverstay = function(){
     $scope.appointmentToday = false;
     $scope.appointmentOverstay = true;
@@ -85,67 +85,80 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
     $scope.appointmentVip = false;
   }
 	
-	if($scope.appointmentToday || $scope.appointmentVip || $scope.appointmentOverstay) {
-		var todaysappointRequestData = {
-		"excludemobileapps": excludemobileapps,
-		"companyid" : companyId,
-		"userid" : userId,
-		"uuid" : uuid
-		};
-		var todaysappointRequest = $appointmentServices.appointmentTodayListRequest(todaysappointRequestData);
-		todaysappointRequest.then(function(todaysappointResponse){
-			$localStorage.todayAppointments  = todaysappointResponse;
-			var todayappointment = [];
-			var vipappointment = [];
-			var overstayappointment = [];
-			for (var key in todaysappointResponse)
-			{
-			    if(todaysappointResponse[key].vipstatus==0) {
-			    	todayappointment.push(todaysappointResponse[key]);
-			    }
-			    if(todaysappointResponse[key].vipstatus==1) {
-			    	vipappointment.push(todaysappointResponse[key]);
-			    }
+	if($scope.appointmentToday || $scope.appointmentVip || $scope.appointmentOverstay) { 
+				stop = $interval(function() {
+				var todaysappointRequestData = {
+					"excludemobileapps": excludemobileapps,
+					"companyid" : companyId,
+					"userid" : userId,
+					"uuid" : uuid
+					};
+					var todaysappointRequest = $appointmentServices.appointmentTodayListRequest(todaysappointRequestData);
+					todaysappointRequest.then(function(todaysappointResponse){
+						$localStorage.todayAppointments  = todaysappointResponse;
+						var todayappointment = [];
+						var vipappointment = [];
+						var overstayappointment = [];
+						for (var key in todaysappointResponse)
+						{
+						    if(todaysappointResponse[key].vipstatus==0) {
+						    	todayappointment.push(todaysappointResponse[key]);
+						    }
+						    if(todaysappointResponse[key].vipstatus==1) {
+						    	vipappointment.push(todaysappointResponse[key]);
+						    }
 
-			    var gateentrytime = '';
-		      	var gateexittime = '';
-		      	if($sessionStorage.userDetails.userrole==='role_company_building_gate') {
-		      		gateentrytime = todaysappointResponse[key].buildingentrytime;
-		      		gateexittime =  todaysappointResponse[key].buildingexittime;
-		      	}
-		      	else if($sessionStorage.userDetails.userrole==='role_company_reception') {
-		      		gateentrytime = todaysappointResponse[key].companyentrytime;
-		      		gateexittime = todaysappointResponse[key].companyexittime;
-		      	}
-		      	else {
-		      		gateentrytime = todaysappointResponse[key].gateentrytime;
-		      		gateexittime = todaysappointResponse[key].gateexittime;
-		      	}
-		      	if(gateentrytime){
-		      		var enrtybits = gateentrytime.split(/\D/);
-					var entryDateObject = new Date(enrtybits[0], --enrtybits[1], enrtybits[2], enrtybits[3], enrtybits[4], enrtybits[5]);
-					var expectExitDateObj = new Date(entryDateObject.getTime() + todaysappointResponse[key].duration*60000);
-					var currentDateObj = new Date();
+						    var gateentrytime = '';
+					      	var gateexittime = '';
+					      	if($sessionStorage.userDetails.userrole==='role_company_building_gate') {
+					      		gateentrytime = todaysappointResponse[key].buildingentrytime;
+					      		gateexittime =  todaysappointResponse[key].buildingexittime;
+					      	}
+					      	else if($sessionStorage.userDetails.userrole==='role_company_reception') {
+					      		gateentrytime = todaysappointResponse[key].companyentrytime;
+					      		gateexittime = todaysappointResponse[key].companyexittime;
+					      	}
+					      	else {
+					      		gateentrytime = todaysappointResponse[key].gateentrytime;
+					      		gateexittime = todaysappointResponse[key].gateexittime;
+					      	}
+					      	if(gateentrytime){
+					      		var enrtybits = gateentrytime.split(/\D/);
+								var entryDateObject = new Date(enrtybits[0], --enrtybits[1], enrtybits[2], enrtybits[3], enrtybits[4], enrtybits[5]);
+								var expectExitDateObj = new Date(entryDateObject.getTime() + todaysappointResponse[key].duration*60000);
+								var currentDateObj = new Date();
 
-					if (currentDateObj.getTime() > expectExitDateObj.getTime() && !gateexittime) {
-					    overstayappointment.push(angular.copy(todaysappointResponse[key]));
-					}
-		      	}
-				
-			   
-			}
-			$scope.todaysAppointment = todayappointment;
-			console.log('Todays---->>',$scope.todaysAppointment);
-			$scope.vipappointment = vipappointment;
-			console.log('Vip---->>',$scope.vipappointment);
-			$scope.overstayappointment = overstayappointment;
-		});
+								if (currentDateObj.getTime() > expectExitDateObj.getTime() && !gateexittime) {
+								    overstayappointment.push(angular.copy(todaysappointResponse[key]));
+								}
+					      	}
+							
+						   
+						}
+						$scope.todaysAppointment = todayappointment;
+						console.log('Todays---->>',$scope.todaysAppointment);
+						$scope.vipappointment = vipappointment;
+						console.log('Vip---->>',$scope.vipappointment);
+						$scope.overstayappointment = overstayappointment;
+					});
+
+				},5000);
+		
+		
 	}
 	
+	$scope.stopFight = function() {
+      if (angular.isDefined(stop)) {
+        $interval.cancel(stop);
+        stop = undefined;
+      }
+    };
+    
 
 	$scope.selectionAppointment = [];
 
 	$scope.toggleSelection = function toggleSelection(fruitName) {
+		$scope.stopFight();
 	    var idx = $scope.selectionAppointment.indexOf(fruitName.id);
 	    // Is currently selected
 	    if (idx > -1) {
@@ -158,6 +171,7 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	    }
 
 	    checkAnyblockItem($scope.selectionAppointment);
+
     };
 
     function checkAnyblockItem(selectionAppointment) {
@@ -466,39 +480,44 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 		   });
 		}
 		else{
-			alert('We can delete maximum of 100 appointments at once');
+			$('#maxAppointmentDeleteModal').modal('show');
 		}
 		
 	}
 
 	$scope.todayAppointmentBlock = function(selectedAppointments) {
-		var reason = prompt("Block Reason", "");
-
+		//var reason = prompt("Block Reason", "");
+		
 		if(selectedAppointments.length < 100) {
-			angular.forEach(selectedAppointments, function(value){
-				angular.forEach($localStorage.todayAppointments, function(eachAppointment){
-					if(eachAppointment.id === value){
-						var blockRequestData = {
-		      			'id' : value,
-		      			'parentid' : '',
-		      			'tocompany' : companyId,
-		      			'year' : eachAppointment.year,
-		      			'userid' : userId,
-		      			'uuid' : uuid,
-		      			'visitdate' : eachAppointment.visitdate,
-		      			'remarks' : reason
-			      		};
-			      		var appointmentBlockRequest =  $appointmentServices.appointmentBlock(blockRequestData);
-			      		appointmentBlockRequest.then(function(blockReponse){
-			      			$state.go($state.current, {}, {reload: true});
-			      			
-			      		});
-					}
+			var reason = ''
+			$('#todayAppointmentBlockModal').modal('show');
+			$('#blockReason').on("change", function () {
+				  reason = $(this).val();
+				  angular.forEach(selectedAppointments, function(value){
+					angular.forEach($localStorage.todayAppointments, function(eachAppointment){
+						if(eachAppointment.id === value){
+							var blockRequestData = {
+			      			'id' : value,
+			      			'parentid' : '',
+			      			'tocompany' : companyId,
+			      			'year' : eachAppointment.year,
+			      			'userid' : userId,
+			      			'uuid' : uuid,
+			      			'visitdate' : eachAppointment.visitdate,
+			      			'remarks' : reason
+				      		};
+				      		var appointmentBlockRequest =  $appointmentServices.appointmentBlock(blockRequestData);
+				      		appointmentBlockRequest.then(function(blockReponse){
+				      			$state.go($state.current, {}, {reload: true});
+				      			$('.modal-backdrop').hide();
+				      		});
+						}
+					});
 				});
 			});
 		}
 		else {
-			alert('We can block maximum of 100 appoints at once');
+			$('#maxAppointmentBlockModal').modal('show');
 		}
 	}
 
@@ -515,7 +534,8 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	$scope.selectionVip = [];
 
 	$scope.toggleVipSelection = function toggleVipSelection(fruitName) {
-
+		$interval.cancel(stop);
+        stop = undefined;
 	    var idx = $scope.selectionVip.indexOf(fruitName.id);
 	    // Is currently selected
 	    if (idx > -1) {
@@ -527,6 +547,7 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	      $scope.selectionVip.push(fruitName.id);
 	    }
 	    checkAnyVipblockItem($scope.selectionVip);
+
     };
 
     function checkAnyVipblockItem(selectionAppointment) {
@@ -563,7 +584,7 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	}
 
 	$scope.vipAppointmentEdit = function() {
-		alert('Vip Appointment Edit');
+		alert('Edit functionality is not available');
 	}
 
 	$scope.vipAppointmentMarkEntry = function(selectedVip) {
@@ -843,37 +864,42 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 		   });
 		}
 		else{
-			alert('We can delete maximum of 100 appointments at once');
+			$('#maxAppointmentDeleteModal').modal('show');
 		}
 	}
 
 	$scope.vipAppointmentBlock = function(selectedVip) {
-		var reason = prompt("Block Reason", "");
+		//var reason = prompt("Block Reason", "");
 
 		if(selectedVip.length < 100) {
-			angular.forEach(selectedVip, function(value){
-				angular.forEach($scope.vipappointment, function(eachAppointment){
-					if(eachAppointment.id === value){
-						var blockRequestData = {
-		      			'id' : value,
-		      			'parentid' : '',
-		      			'tocompany' : companyId,
-		      			'year' : eachAppointment.year,
-		      			'userid' : userId,
-		      			'uuid' : uuid,
-		      			'visitdate' : eachAppointment.visitdate,
-		      			'remarks' : reason
-			      		};
-			      		var appointmentBlockRequest =  $appointmentServices.appointmentBlock(blockRequestData);
-			      		appointmentBlockRequest.then(function(blockReponse){
-			      			$state.go($state.current, {}, {reload: true});
-			      		});
-					}
+			$('#todayAppointmentBlockModal').modal('show');
+			$('#blockReason').on("change", function () {
+				reason = $(this).val();
+				angular.forEach(selectedVip, function(value){
+					angular.forEach($scope.vipappointment, function(eachAppointment){
+						if(eachAppointment.id === value){
+							var blockRequestData = {
+			      			'id' : value,
+			      			'parentid' : '',
+			      			'tocompany' : companyId,
+			      			'year' : eachAppointment.year,
+			      			'userid' : userId,
+			      			'uuid' : uuid,
+			      			'visitdate' : eachAppointment.visitdate,
+			      			'remarks' : reason
+				      		};
+				      		var appointmentBlockRequest =  $appointmentServices.appointmentBlock(blockRequestData);
+				      		appointmentBlockRequest.then(function(blockReponse){
+				      			$state.go($state.current, {}, {reload: true});
+				      		});
+						}
+					});
 				});
 			});
+			
 		}
 		else {
-			alert('We can block maximum of 100 appoints at once');
+			$('#maxAppointmentBlockModal').modal('show');
 		}
 	}
 
@@ -881,7 +907,8 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	$scope.selectionOverStay = [];
 
 	$scope.toggleOverStaySelection = function toggleOverStaySelection(fruitName) {
-
+		$interval.cancel(stop);
+        stop = undefined;
 	    var idx = $scope.selectionOverStay.indexOf(fruitName.id);
 	    // Is currently selected
 	    if (idx > -1) {
@@ -893,6 +920,7 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 	      $scope.selectionOverStay.push(fruitName.id);
 	    }
 	    checkAnyOverstayblockItem($scope.selectionOverStay);
+	    $scope.stopFight();
     };
 
     function checkAnyOverstayblockItem(selectionAppointment) {
@@ -917,19 +945,18 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 		$scope.selectionOverStay = [];
 		angular.forEach($scope.overstayappointment, function (overstayAppointment) {
              overstayAppointment.selected = true;
-             $scope.toggleVipSelection(overstayAppointment);
+             $scope.toggleOverStaySelection(overstayAppointment);
         });
 	}
 
 
 
 	$scope.overstayView = function(seelectedOverstay) {
-		alert('Overstay View Functionality');
 		$state.go('app.view', { 'id': seelectedOverstay[0] });
 	}
 
 	$scope.overstayEdit = function() {
-		alert('Overstay Edit Functionality');
+		alert('Edit Functionality is not available');
 	}
 
 	$scope.overstayMarkExit = function(seelectedOverstay) {
@@ -1147,37 +1174,40 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 		   });
 		}
 		else{
-			alert('We can delete maximum of 100 appointments at once');
+			$('#maxAppointmentDeleteModal').modal('show');
 		}
 	}
 
 	$scope.overstayBlock = function(seelectedOverstay) {
-		var reason = prompt("Block Reason", "");
 
 		if(seelectedOverstay.length < 100) {
-			angular.forEach(seelectedOverstay, function(value){
-				angular.forEach($scope.overstayappointment, function(eachAppointment){
-					if(eachAppointment.id === value){
-						var blockRequestData = {
-		      			'id' : value,
-		      			'parentid' : '',
-		      			'tocompany' : companyId,
-		      			'year' : eachAppointment.year,
-		      			'userid' : userId,
-		      			'uuid' : uuid,
-		      			'visitdate' : eachAppointment.visitdate,
-		      			'remarks' : reason
-			      		};
-			      		var appointmentBlockRequest =  $appointmentServices.appointmentBlock(blockRequestData);
-			      		appointmentBlockRequest.then(function(blockReponse){
-			      			$state.go($state.current, {}, {reload: true});
-			      		});
-					}
+			$('#todayAppointmentBlockModal').modal('show');
+			$('#blockReason').on("change", function () {
+				angular.forEach(seelectedOverstay, function(value){
+					angular.forEach($scope.overstayappointment, function(eachAppointment){
+						if(eachAppointment.id === value){
+							var blockRequestData = {
+			      			'id' : value,
+			      			'parentid' : '',
+			      			'tocompany' : companyId,
+			      			'year' : eachAppointment.year,
+			      			'userid' : userId,
+			      			'uuid' : uuid,
+			      			'visitdate' : eachAppointment.visitdate,
+			      			'remarks' : reason
+				      		};
+				      		var appointmentBlockRequest =  $appointmentServices.appointmentBlock(blockRequestData);
+				      		appointmentBlockRequest.then(function(blockReponse){
+				      			$state.go($state.current, {}, {reload: true});
+				      		});
+						}
+					});
 				});
 			});
+			
 		}
 		else {
-			alert('We can block maximum of 100 appoints at once');
+			$('#maxAppointmentBlockModal').modal('show');
 		}
 	}
 
@@ -1229,6 +1259,11 @@ function appointmentController($scope, uuid, $http, $state, $window, $cookies, $
 
     	});
 	}
+
+    $scope.$on('$destroy', function() {
+      // Make sure that the interval is destroyed too
+      $scope.stopFight();
+    });
 
 }
 

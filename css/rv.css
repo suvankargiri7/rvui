@@ -210,3 +210,7 @@
 .header-fixed .app-body {
   min-height: 540px;
 }
+
+.danger-color{
+  color: #FF0000;
+}

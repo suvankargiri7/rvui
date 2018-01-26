@@ -12,10 +12,12 @@ appointmentHistoryController.$inject = [
   '$cookies',
   '$localStorage',
   '$sessionStorage',
-  '$appointmentServices'
+  '$appointmentServices',
+  'FileSaver',
+  'Blob'
 ];
 
-function appointmentHistoryController($scope, uuid, $http, $state, $window, $cookies, $localStorage, $sessionStorage,$appointmentServices) {
+function appointmentHistoryController($scope, uuid, $http, $state, $window, $cookies, $localStorage, $sessionStorage,$appointmentServices, FileSaver, Blob) {
 	var excludemobileapps = $sessionStorage.excludemobileapps;
 	var companyId = $sessionStorage.userDetails.companyid;
 	var userId = $sessionStorage.userDetails.userid;
@@ -325,7 +327,20 @@ function appointmentHistoryController($scope, uuid, $http, $state, $window, $coo
             }
           });
        });
-    return exportedData;
+
+    var data = [];
+      var ws = XLSX.utils.json_to_sheet(exportedData);
+      //var wopts = { bookType:'xlsx', bookSST:false, type:'array' };
+
+        /* add to workbook */
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws);
+
+        /* write workbook (use type 'array' for ArrayBuffer) */
+        var wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
+
+        /* generate a download */
+        FileSaver.saveAs(new Blob([wbout],{type:"application/octet-stream"}), "AppointmentHistory.xlsx");
   }
 
 
@@ -350,7 +365,7 @@ function appointmentHistoryController($scope, uuid, $http, $state, $window, $coo
        });
     }
     else{
-      alert('We can delete maximum of 100 appointments at once');
+      $('#maxAppointmentDeleteModal').modal('show');
     }
   }
 

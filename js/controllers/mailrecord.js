@@ -14,10 +14,12 @@ mailrecordController.$inject = [
   '$sessionStorage',
   '$mailrecordServices',
   '$interval',
-  '$filter'
+  '$filter',
+  'FileSaver',
+  'Blob'
 ];
 
-function mailrecordController($scope, uuid, $http, $state, $window, $cookies, $localStorage, $sessionStorage, $mailrecordServices,$interval,$filter) {
+function mailrecordController($scope, uuid, $http, $state, $window, $cookies, $localStorage, $sessionStorage, $mailrecordServices,$interval,$filter,FileSaver,Blob) {
 	var excludemobileapps = $sessionStorage.excludemobileapps;
 	var companyId = $sessionStorage.userDetails.companyid;
 	var userId = $sessionStorage.userDetails.userid;
@@ -226,7 +228,20 @@ function mailrecordController($scope, uuid, $http, $state, $window, $cookies, $l
 		      		
 		    });
 		 });
-		return exportedData;
+		//return exportedData;
+		var data = [];
+	    var ws = XLSX.utils.json_to_sheet(exportedData);
+	    //var wopts = { bookType:'xlsx', bookSST:false, type:'array' };
+
+	      /* add to workbook */
+	      var wb = XLSX.utils.book_new();
+	      XLSX.utils.book_append_sheet(wb, ws);
+
+	      /* write workbook (use type 'array' for ArrayBuffer) */
+	      var wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
+
+	      /* generate a download */
+	      FileSaver.saveAs(new Blob([wbout],{type:"application/octet-stream"}), "MailRecord.xlsx");
 	}
 
 	$scope.deleleSelectionData = function(selectedData) {
