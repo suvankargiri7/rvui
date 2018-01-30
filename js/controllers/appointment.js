@@ -102,13 +102,10 @@ function appointmentController($scope, uuid, $interval, $http, $state, $window, 
 				var overstayappointment = [];
 				for (var key in todaysappointResponse)
 				{
-				    if(todaysappointResponse[key].vipstatus==0) {
-				    	todayappointment.push(todaysappointResponse[key]);
-				    }
+				   	todayappointment.push(todaysappointResponse[key]);
 				    if(todaysappointResponse[key].vipstatus==1) {
 				    	vipappointment.push(angular.copy(todaysappointResponse[key]));
 				    }
-
 				    var gateentrytime = '';
 			      	var gateexittime = '';
 			      	if($sessionStorage.userDetails.userrole==='role_company_building_gate') {
