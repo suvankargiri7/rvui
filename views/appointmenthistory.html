@@ -103,7 +103,7 @@
                                               ng-click="toggleSelection(appointment)"></td>
                                   <th scope="row">
                                     <div class="avatar">
-                                        <img ng-src="https://cppjs.com/api/visitor/visitorid/{{appointment.visitorid}}/photo/user/{{userid}}/uuid/{{uuid}}" class="img-avatar" alt="visitor image" src="img/avatars/1.jpg">
+                                        <img ng-src="https://cppjs.com/api/visitor/visitorid/{{appointment.visitorid}}/photo/user/{{userid}}/uuid/{{uuid}}" class="img-avatar" alt="visitor image" src="img/avatars/1.jpg" onError="this.onerror=null;this.src='/img/logo.png';">
                                     </div>
                                   </th>
                                   <td ng-if="userrole==='role_company_gate' || userrole==='role_company_admin'">
